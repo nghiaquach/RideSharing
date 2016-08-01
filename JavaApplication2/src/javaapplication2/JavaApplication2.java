@@ -17,6 +17,12 @@ public class JavaApplication2 {
     public static void main(String[] args) {
         // TODO code application logic here
         System.out.println("Welcome to 31242-advanced-internet-programming");
+        
+        
+    }
+    
+    private int addTwoNumbers(int fNumber, int sNumber){
+        return fNumber + sNumber;
     }
     
 }
