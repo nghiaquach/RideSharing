@@ -21,6 +21,7 @@ public class JavaApplication2 {
         
     }
     
+    //add two number
     private int addTwoNumbers(int fNumber, int sNumber){
         return fNumber + sNumber;
     }
