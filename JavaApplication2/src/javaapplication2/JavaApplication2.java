@@ -16,7 +16,7 @@ public class JavaApplication2 {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        System.out.println("javaapplication2.JavaApplication2.main()");
+        System.out.println("Welcome to 31242-advanced-internet-programming");
     }
     
 }
