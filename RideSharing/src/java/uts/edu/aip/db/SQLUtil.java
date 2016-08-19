@@ -24,6 +24,9 @@ public class SQLUtil {
     public static final String LAST_NAME_FIELD = "LAST_NAME";
     public static final String PHONE_NO_FIELD = "PHONE_NO";
     public static final String REGISTRATION_DATE_FIELD = "REGISTRATION_DATE";
+    
+    public static final String MODEL_FIELD = "MODEL";
+    public static final String IMAGE_FIELD = "IMAGE";
    
    private static SQLUtil instance = null;
    private Connection conn = null;
