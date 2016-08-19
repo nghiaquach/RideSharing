@@ -16,7 +16,7 @@ public class User {
     private int id;
     private String username;
     private String password;
-    private Date registrationDate;
+    private String registrationDate;
     private String userType;
     private String firstName;
     private String lastName;
@@ -26,7 +26,7 @@ public class User {
         
     }
 
-    public User(int id, String username, String password, Date registrationDate, String userType, String firstName, String lastName, String phoneNo) {
+    public User(int id, String username, String password, String registrationDate, String userType, String firstName, String lastName, String phoneNo) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -63,11 +63,11 @@ public class User {
         this.password = password;
     }
 
-    public Date getRegistrationDate() {
+    public String getRegistrationDate() {
         return registrationDate;
     }
 
-    public void setRegistrationDate(Date registrationDate) {
+    public void setRegistrationDate(String registrationDate) {
         this.registrationDate = registrationDate;
     }
 
@@ -102,8 +102,4 @@ public class User {
     public void setPhoneNo(String phoneNo) {
         this.phoneNo = phoneNo;
     }
-    
-    
-    
-    
 }
