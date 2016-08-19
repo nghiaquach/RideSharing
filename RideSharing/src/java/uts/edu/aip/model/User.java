@@ -5,8 +5,6 @@
  */
 package uts.edu.aip.model;
 
-import java.util.Date;
-
 /**
  *
  * @author NQ

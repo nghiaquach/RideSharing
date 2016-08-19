@@ -15,6 +15,15 @@ import java.util.Properties;
  * @author NQ
  */
 public class SQLUtil {
+    
+    public static final String ID_FIELD = "id";
+    public static final String USER_NAME_FIELD = "USER_NAME";
+    public static final String PASSWORD_FIELD = "PASSWORD";
+    public static final String USER_TYPE_FIELD = "USER_TYPE";
+    public static final String FIRST_NAME_FIELD = "FIRST_NAME";
+    public static final String LAST_NAME_FIELD = "LAST_NAME";
+    public static final String PHONE_NO_FIELD = "PHONE_NO";
+    public static final String REGISTRATION_DATE_FIELD = "REGISTRATION_DATE";
    
    private static SQLUtil instance = null;
    private Connection conn = null;
