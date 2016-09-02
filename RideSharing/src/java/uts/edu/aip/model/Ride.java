@@ -11,7 +11,7 @@ import java.util.Date;
  *
  * @author NQ
  */
-public class Transaction {
+public class Ride {
     private int userId;
     private int vehicleId;
     private String publishDate;
@@ -19,10 +19,10 @@ public class Transaction {
     private int availableSeats;
     private boolean status;
 
-    public Transaction() {
+    public Ride() {
     }
 
-    public Transaction(int userId, int vehicleId, String publishDate, String pickupLocation, int availableSeats, boolean status) {
+    public Ride(int userId, int vehicleId, String publishDate, String pickupLocation, int availableSeats, boolean status) {
         this.userId = userId;
         this.vehicleId = vehicleId;
         this.publishDate = publishDate;

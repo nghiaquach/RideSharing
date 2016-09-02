@@ -55,10 +55,13 @@ public class UserDAOImpl implements UserDAO{
         User user = new User();
         try {
             Connection conn = SQLUtil.getInstance().getConnection();
-            Statement stmt = conn.createStatement();
-            ResultSet rs;
- 
-            rs = stmt.executeQuery("SELECT * FROM USERS WHERE ID='"+userId+"'");
+            
+            String selectSQL = "SELECT * FROM USERS WHERE ID=?";
+            
+            PreparedStatement preparedStatement = conn.prepareStatement(selectSQL);
+            preparedStatement.setInt(1, userId);
+            ResultSet rs = preparedStatement.executeQuery(selectSQL);
+            
             while ( rs.next() ) {
                 user.setId(rs.getInt(SQLUtil.ID_FIELD));
                 user.setUsername(rs.getString(SQLUtil.USER_NAME_FIELD));
@@ -100,23 +103,46 @@ public class UserDAOImpl implements UserDAO{
 
     @Override
     public boolean addUser(User user) {
+        int id = this.getLastId();
         try {
             Connection conn = SQLUtil.getInstance().getConnection();
             PreparedStatement ps = 
             conn.prepareStatement( "INSERT INTO USERS VALUES( ?,?,?,?,?,?,?,? )" );
-            ps.setInt(1, user.getId());
+            ps.setInt(1, id);
             ps.setString( 2, user.getUsername());
             ps.setString( 3, user.getPassword());
-            ps.setString(4, user.getRegistrationDate());
-            ps.setString( 5, user.getUserType());
-            ps.setString( 6, user.getFirstName());
-            ps.setString( 7, user.getLastName());
-            ps.setString( 8, user.getPhoneNo());
+            ps.setString( 4, user.getUserType());
+            ps.setString( 5, user.getFirstName());
+            ps.setString( 6, user.getLastName());
+            ps.setString( 7, user.getPhoneNo());
+            ps.setString( 8, SQLUtil.getInstance().getStringDate());
             ps.executeUpdate();
+            
+            conn.close();
         } catch (SQLException ex) {
             Logger.getLogger(UserDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         }
         return true;
+    }
+    
+    private int getLastId (){
+        int id = 1;
+        try {
+            Connection conn = SQLUtil.getInstance().getConnection();
+            Statement stmt = conn.createStatement();
+            ResultSet rs;
+ 
+            rs = stmt.executeQuery("SELECT MAX(ID) FROM USERS");
+            if ( rs.next() ) {
+                id = rs.getInt(1);
+                ++id;
+            }
+            stmt.close();
+            rs.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return id;
     }
 }

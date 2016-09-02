@@ -6,36 +6,36 @@
 package uts.edu.aip.dao;
 
 import java.util.List;
-import uts.edu.aip.model.Transaction;
+import uts.edu.aip.model.Ride;
 
 /**
  *
  * @author NQ
  */
-public class TransactionDAOImpl implements TransactionDAO{
+public class RideDAOImpl implements RideDAO{
 
     @Override
-    public List<Transaction> getAllTransactions() {
+    public List<Ride> getAllTransactions() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Transaction getTransaction(int trasactionId) {
+    public Ride getTransaction(int trasactionId) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void addTransaction(Transaction transaction) {
+    public void addTransaction(Ride transaction) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void updateTransaction(Transaction transaction) {
+    public void updateTransaction(Ride transaction) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void deleteTransaction(Transaction transaction) {
+    public void deleteTransaction(Ride transaction) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     

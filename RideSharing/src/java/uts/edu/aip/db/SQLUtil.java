@@ -8,6 +8,10 @@ package uts.edu.aip.db;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Properties;
 
 /**
@@ -16,8 +20,8 @@ import java.util.Properties;
  */
 public class SQLUtil {
     
-    public static final String ID_FIELD = "id";
-    public static final String USER_NAME_FIELD = "USER_NAME";
+    public static final String ID_FIELD = "ID";
+    public static final String USER_NAME_FIELD = "USERNAME";
     public static final String PASSWORD_FIELD = "PASSWORD";
     public static final String USER_TYPE_FIELD = "USER_TYPE";
     public static final String FIRST_NAME_FIELD = "FIRST_NAME";
@@ -53,4 +57,17 @@ public class SQLUtil {
         }
         return conn;
     }
+    
+    public String getStringDate(){
+        DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+        // Get the date today using Calendar object.
+        Date today = Calendar.getInstance().getTime();        
+        // Using DateFormat format method we can create a string 
+        // representation of a date with the defined format.
+        return df.format(today);
+    }
+    
+//    public static void main(String[] args) {
+//        System.out.println(SQLUtil.getInstance().getStringDate());
+//    }
 }

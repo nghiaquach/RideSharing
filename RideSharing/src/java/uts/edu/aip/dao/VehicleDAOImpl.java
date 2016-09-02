@@ -51,11 +51,15 @@ public class VehicleDAOImpl implements VehicleDAO{
     public Vehicle findVehicle(int vehicleId) {
         Vehicle vehicle = new Vehicle();
         try {
+            
             Connection conn = SQLUtil.getInstance().getConnection();
-            Statement stmt = conn.createStatement();
-            ResultSet rs;
- 
-            rs = stmt.executeQuery("SELECT * FROM VEHICLES WHERE ID='"+vehicleId+"'");
+            
+            String selectSQL = "SELECT * FROM VEHICLES WHERE ID=?";
+            
+            PreparedStatement preparedStatement = conn.prepareStatement(selectSQL);
+            preparedStatement.setInt(1, vehicleId);
+            ResultSet rs = preparedStatement.executeQuery(selectSQL);
+            
             while ( rs.next() ) {
                 vehicle.setId(rs.getInt(SQLUtil.ID_FIELD));
                 vehicle.setModel(rs.getString(SQLUtil.MODEL_FIELD));
