@@ -106,11 +106,12 @@ public class VehicleDAOImpl implements VehicleDAO{
 
     @Override
     public boolean addVehicle(Vehicle vehicle) {
+        int id = this.getLastId();
         try {
             Connection conn = SQLUtil.getInstance().getConnection();
             PreparedStatement ps = 
             conn.prepareStatement( "INSERT INTO VEHICLES VALUES( ?,?,? )" );
-            ps.setInt(1, vehicle.getId());
+            ps.setInt(1, id);
             ps.setString( 2, vehicle.getModel());
             ps.setBytes(3, vehicle.getImage());
             ps.executeUpdate();
@@ -121,4 +122,22 @@ public class VehicleDAOImpl implements VehicleDAO{
         return true;
     }
     
+    private int getLastId (){
+        int id = 1;
+        try {
+            Connection conn = SQLUtil.getInstance().getConnection();
+            ResultSet rs;
+            try (Statement stmt = conn.createStatement()) {
+                rs = stmt.executeQuery("SELECT MAX(ID) FROM VEHICLES");
+                if ( rs.next() ) {
+                    id = rs.getInt(1);
+                    ++id;
+                }
+            }
+            rs.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return id;
+    }   
 }

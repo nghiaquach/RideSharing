@@ -13,10 +13,10 @@ import uts.edu.aip.model.Ride;
  * @author NQ
  */
 public interface RideDAO {
-   public List<Ride> getAllTransactions();
-   public Ride getTransaction(int trasactionId);
-   public void addTransaction(Ride transaction);
-   public void updateTransaction(Ride transaction);
-   public void deleteTransaction(Ride transaction);
+   public List<Ride> getRides();
+   public Ride getRide(int rideId);
+   public boolean addRide(Ride ride);
+   public boolean updateRide(Ride ride);
+   public boolean deleteRide(Ride ride);
    
 }

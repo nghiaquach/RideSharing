@@ -8,7 +8,22 @@
     <h:body>
         Hello from Facelets
         <h:form>
-            <h:commandButton value="Register" action="register"/>
+                <p>
+                    <label>
+                        Username: 
+                        <h:inputText id="username" value="#{userController.user.username}"/>
+                        <h:message for="username"/>
+                    </label>
+                </p>
+                <p>
+                    <label>
+                        Password: 
+                        <h:inputSecret id="password" value="#{userController.user.password}"/>
+                        <h:message for="password"/>
+                    </label>
+                </p>
+            
+            <h:commandButton value="login" action="login"/>
         </h:form>
     </h:body>
 </html>

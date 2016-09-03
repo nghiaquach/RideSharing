@@ -5,13 +5,12 @@
  */
 package uts.edu.aip.model;
 
-import java.util.Date;
-
 /**
  *
  * @author NQ
  */
 public class Ride {
+    private int id;
     private int userId;
     private int vehicleId;
     private String publishDate;
@@ -22,13 +21,22 @@ public class Ride {
     public Ride() {
     }
 
-    public Ride(int userId, int vehicleId, String publishDate, String pickupLocation, int availableSeats, boolean status) {
+    public Ride(int id, int userId, int vehicleId, String publishDate, String pickupLocation, int availableSeats, boolean status) {
+        this.id = id;
         this.userId = userId;
         this.vehicleId = vehicleId;
         this.publishDate = publishDate;
         this.pickupLocation = pickupLocation;
         this.availableSeats = availableSeats;
         this.status = status;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getUserId() {

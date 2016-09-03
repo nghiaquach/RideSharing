@@ -31,6 +31,13 @@ public class SQLUtil {
     
     public static final String MODEL_FIELD = "MODEL";
     public static final String IMAGE_FIELD = "IMAGE";
+    
+    public static final String USER_ID_FIELD = "USER_ID";
+    public static final String VEHICLE_ID_FIELD = "VEHICLE_ID";
+    public static final String PICKUP_LOCATION_FIELD = "PICKUP_LOCATION";
+    public static final String STATUS_FIELD = "STATUS";
+    public static final String AVAILABLE_SEATS_FIELD = "AVAILABLE_SEATS";
+    public static final String PUBLISH_DATE_FIELD = "PUBLISH_DATE";
    
    private static SQLUtil instance = null;
    private Connection conn = null;
