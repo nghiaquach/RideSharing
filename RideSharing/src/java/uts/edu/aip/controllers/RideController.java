@@ -96,7 +96,15 @@ public class RideController implements Serializable {
     }
 
     public boolean isAddRide() {
-        return this.getUser().getUserType().equals(User.DRIVER) && myRide!=null;
+        return this.getUser().getUserType().equals(User.DRIVER) && this.getMyRide().getId()>0;
+    }
+    
+    public boolean isEditable() {
+        return this.getMyRide().getId()>0;
+    }
+    
+    public String deleteRide(){
+        return "deleted";
     }
 
     public Vehicle getVehicle() {
@@ -109,6 +117,7 @@ public class RideController implements Serializable {
 
     public Ride getMyRide() {
         RideDAO rideDAO = new RideDAOImpl();
+        System.out.println("uts.edu.aip.controllers.RideController.getMyRide()" + user.getId());
         return rideDAO.getRideIDFromUserID(user.getId());
     }
 
