@@ -18,5 +18,5 @@ public interface RideDAO {
    public boolean addRide(Ride ride);
    public boolean updateRide(Ride ride);
    public boolean deleteRide(Ride ride);
-   
+   public Ride getRideIDFromUserID(int userID);
 }

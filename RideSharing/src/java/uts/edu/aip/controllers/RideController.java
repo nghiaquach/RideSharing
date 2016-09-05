@@ -11,7 +11,6 @@ import java.io.Serializable;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
-import javax.enterprise.context.RequestScoped;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -37,18 +36,20 @@ import uts.edu.aip.utilities.Constant;
 public class RideController implements Serializable {
 
     private List<Ride> rides = new ArrayList<Ride>();
+    private Ride myRide = new Ride();
+    
     private Vehicle vehicle = new Vehicle();
     private Ride ride = new Ride();
     private User user = new User();
     private Part file;
     private String tempFileName;
     
+    
     public synchronized void save() {
         
         FacesContext context = FacesContext.getCurrentInstance();
         HttpServletRequest request = (HttpServletRequest)context.getExternalContext().getRequest();
-   
-        String uploadDirPath = request.getServletContext().getRealPath("/") + Constant.UPLOAD_DIRECTORY;
+        String uploadDirPath = request.getServletContext().getRealPath("/")+Constant.UPLOAD_DIRECTORY;
         //Create the uploads dir if it does not exist
         this.createUploadDir(uploadDirPath);
         
@@ -57,6 +58,7 @@ public class RideController implements Serializable {
                 +file.getSubmittedFileName();
         
         try (InputStream input = file.getInputStream()) {
+            System.out.println("uts.edu.aip.controllers.RideController.save()" + uploadDirPath);
            Files.copy(input, new File(uploadDirPath+"/"+tempFileName).toPath());
         } catch (Exception e) {
             context.addMessage(null, new FacesMessage(e.getMessage()));
@@ -83,6 +85,7 @@ public class RideController implements Serializable {
         ride.setStatus(true);
         ride.setUserId(user.getId());
         ride.setVehicleId(vehicleId);
+        
         boolean isAddedRide = rideDAO.addRide(ride);
 
         if (vehicleId!=0 && isAddedRide) {
@@ -92,8 +95,8 @@ public class RideController implements Serializable {
         }
     }
 
-    public boolean isDriver() {
-        return this.getUser().getUserType().equals(User.DRIVER);
+    public boolean isAddRide() {
+        return this.getUser().getUserType().equals(User.DRIVER) && myRide!=null;
     }
 
     public Vehicle getVehicle() {
@@ -104,7 +107,17 @@ public class RideController implements Serializable {
         this.vehicle = vehicle;
     }
 
-    public Ride getRide() {
+    public Ride getMyRide() {
+        RideDAO rideDAO = new RideDAOImpl();
+        return rideDAO.getRideIDFromUserID(user.getId());
+    }
+
+    public void setMyRide(Ride myRide) {
+        this.myRide = myRide;
+    }
+    
+    
+     public Ride getRide() {
         return ride;
     }
 
@@ -119,7 +132,8 @@ public class RideController implements Serializable {
     }
 
     public List<Ride> getRides() {
-        return rides;
+        RideDAO rideDAO = new RideDAOImpl();
+        return rideDAO.getRides();
     }
 
     public void setRides(List<Ride> rides) {
@@ -145,4 +159,6 @@ public class RideController implements Serializable {
     public void setFile(Part file) {
         this.file = file;
     }
+    
+    
 }

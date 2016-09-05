@@ -34,7 +34,9 @@ public class LoginController implements Serializable{
         HttpServletRequest request = (HttpServletRequest)context.getExternalContext().getRequest();
         
         System.out.println("server path:" + request.getServletPath());
-        System.out.println("getContextPath path:" + request.getContextPath());
+        System.out.println("getContextPath path:" + request.getServletContext().getContextPath());
+        System.out.println("getContextPath path:" + request.getServletContext().getRealPath("/"));
+        
         
         try {
             request.login(username, password);

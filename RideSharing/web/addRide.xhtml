@@ -43,8 +43,24 @@
                     <h:message for="pickupLocation"/>
                 </label>
             </p>
+            
             <p>
-
+                <label>
+                    Pickup Time:
+                    <h:inputText id="pickupTime" value="#{rideController.ride.pickupTime}"/>
+                    <h:message for="pickupTime"/>
+                </label>
+            </p>
+            
+            <p>
+                <label>
+                    Final Destination:
+                    <h:inputText id="finalDestination" value="#{rideController.ride.finalDestination}"/>
+                    <h:message for="finalDestination"/>
+                </label>
+            </p>
+            
+            <p>
                 <h:commandButton value="Publish" action="#{rideController.addRide()}"/>
             </p>
         </h:form>

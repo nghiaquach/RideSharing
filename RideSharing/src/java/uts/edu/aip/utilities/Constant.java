@@ -10,6 +10,6 @@ package uts.edu.aip.utilities;
  * @author NQ
  */
 public class Constant {
-    public static final String UPLOAD_DIRECTORY = "uploads";
+    public static final String UPLOAD_DIRECTORY = "/resources/images";
     public static final String INITIAL_DATE_FORMAT_FOR_IMAGE = "MMddyyyyHHmmss_";
 }

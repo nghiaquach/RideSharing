@@ -16,6 +16,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import uts.edu.aip.db.SQLUtil;
 import uts.edu.aip.model.Ride;
+import uts.edu.aip.model.Vehicle;
 
 /**
  *
@@ -44,6 +45,8 @@ public class RideDAOImpl implements RideDAO{
                 ride.setPickupTime(rs.getString(SQLUtil.PICKUP_TIME_FIELD));
                 ride.setFinalDestination(rs.getString(SQLUtil.FINAL_DESTINATION_FIELD));
                 
+                //Get Vehicle from vehice id
+                ride.setVehicle(this.getVehicle(ride.getVehicleId()));
                 
                 rides.add(ride);
             }
@@ -54,6 +57,12 @@ public class RideDAOImpl implements RideDAO{
         }
         return rides;
     }
+    
+    private Vehicle getVehicle(int vehicleID){
+         //Get Vehicle from vehice id
+        VehicleDAO vehicleDAO = new VehicleDAOImpl();
+        return vehicleDAO.findVehicle(vehicleID);  
+    }
 
     @Override
     public Ride getRide(int rideID) {
@@ -63,7 +72,7 @@ public class RideDAOImpl implements RideDAO{
             Statement stmt = conn.createStatement();
             ResultSet rs;
  
-            rs = stmt.executeQuery("SELECT * FROM USER_VEHICLE WHERE ID='"+rideID+"'");
+            rs = stmt.executeQuery("SELECT * FROM USER_VEHICLE WHERE ID="+rideID);
             
             while ( rs.next() ) {
                 ride.setId(rs.getInt(SQLUtil.ID_FIELD));
@@ -75,6 +84,42 @@ public class RideDAOImpl implements RideDAO{
                 ride.setVehicleId(rs.getInt(SQLUtil.VEHICLE_ID_FIELD));
                 ride.setFinalDestination(rs.getString(SQLUtil.FINAL_DESTINATION_FIELD));
                 ride.setPickupTime(rs.getString(SQLUtil.PICKUP_TIME_FIELD));
+                
+                //Get Vehicle from vehice id
+                ride.setVehicle(this.getVehicle(ride.getVehicleId()));
+                
+            }
+            conn.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return ride;
+    }
+    
+    @Override
+    public Ride getRideIDFromUserID(int userID) {
+        Ride ride = new Ride();
+        try {
+            Connection conn = SQLUtil.getInstance().getConnection();
+            Statement stmt = conn.createStatement();
+            ResultSet rs;
+ 
+            rs = stmt.executeQuery("SELECT * FROM USER_VEHICLE WHERE USER_ID="+userID);
+            
+            while ( rs.next() ) {
+                ride.setId(rs.getInt(SQLUtil.ID_FIELD));
+                ride.setAvailableSeats(rs.getInt(SQLUtil.AVAILABLE_SEATS_FIELD));
+                ride.setPickupLocation(rs.getString(SQLUtil.PICKUP_LOCATION_FIELD));
+                ride.setPublishDate(rs.getString(SQLUtil.PUBLISH_DATE_FIELD));
+                ride.setStatus(rs.getBoolean(SQLUtil.STATUS_FIELD));
+                ride.setUserId(rs.getInt(SQLUtil.USER_ID_FIELD));
+                ride.setVehicleId(rs.getInt(SQLUtil.VEHICLE_ID_FIELD));
+                ride.setFinalDestination(rs.getString(SQLUtil.FINAL_DESTINATION_FIELD));
+                ride.setPickupTime(rs.getString(SQLUtil.PICKUP_TIME_FIELD));
+                
+                //Get Vehicle from vehice id
+                ride.setVehicle(this.getVehicle(ride.getVehicleId()));
+                
             }
             conn.close();
         } catch (SQLException ex) {

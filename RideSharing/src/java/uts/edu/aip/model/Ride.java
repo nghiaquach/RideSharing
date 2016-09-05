@@ -21,11 +21,12 @@ public class Ride implements Serializable{
     private boolean status;
     private String pickupTime;
     private String finalDestination;
+    private Vehicle vehicle;
 
     public Ride() {
     }
 
-    public Ride(int id, int userId, int vehicleId, String publishDate, String pickupLocation, int availableSeats, boolean status, String pickupTime, String finalDestination) {
+    public Ride(int id, int userId, int vehicleId, String publishDate, String pickupLocation, int availableSeats, boolean status, String pickupTime, String finalDestination, Vehicle vehicle) {
         this.id = id;
         this.userId = userId;
         this.vehicleId = vehicleId;
@@ -35,6 +36,7 @@ public class Ride implements Serializable{
         this.status = status;
         this.pickupTime = pickupTime;
         this.finalDestination = finalDestination;
+        this.vehicle = vehicle;
     }
 
     public String getPickupTime() {
@@ -108,6 +110,16 @@ public class Ride implements Serializable{
     public void setStatus(boolean status) {
         this.status = status;
     }
+
+    public Vehicle getVehicle() {
+        return vehicle;
+    }
+
+    public void setVehicle(Vehicle vehicle) {
+        this.vehicle = vehicle;
+    }
+    
+    
     
     
 }

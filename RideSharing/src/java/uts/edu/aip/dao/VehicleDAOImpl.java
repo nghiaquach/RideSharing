@@ -55,12 +55,12 @@ public class VehicleDAOImpl implements VehicleDAO{
             Statement stmt = conn.createStatement();
             ResultSet rs;
  
-            rs = stmt.executeQuery("SELECT * FROM VEHICLES WHERE ID='"+vehicleId+"'");
+            rs = stmt.executeQuery("SELECT * FROM VEHICLES WHERE ID="+vehicleId);
             
             while ( rs.next() ) {
                 vehicle.setId(rs.getInt(SQLUtil.ID_FIELD));
                 vehicle.setModel(rs.getString(SQLUtil.MODEL_FIELD));
-//                vehicle.setImage(rs.getBlob(SQLUtil.IMAGE_FIELD));
+                vehicle.setImage(rs.getString(SQLUtil.IMAGE_FIELD));
             }
             conn.close();
         } catch (SQLException ex) {

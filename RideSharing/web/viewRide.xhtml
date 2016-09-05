@@ -5,13 +5,65 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
         <title>View Ride</title>
+        <h:outputStylesheet library="css" name="style.css"  />
     </h:head>
     <h:body>
         <h:form>
-            <h:commandButton rendered="#{rideController.isDriver()}" value="Add Ride" action="addRide"/>
+            <h:commandButton rendered="#{rideController.isAddRide()}" value="Add Ride" action="addRide"/>
             <f:view>
                 <h:form>
-                    <h:dataTable value="#{rideController.rides}" var="item">
+                    <h:dataTable value="#{rideController.myRide}" var="myride"
+                                 styleClass="ride-table"
+                                 headerClass="ride-table-header"
+                                 rowClasses="ride-table-odd-row,ride-table-even-row"
+                                 >
+                        <h:column>
+                            <f:facet name="header">Image</f:facet>
+                            <h:graphicImage width="100px" height="100px" value="resources/images/#{myride.vehicle.image}" />
+                        </h:column>
+
+                        <h:column>
+                            <!-- column header -->
+                            <f:facet name="header">Model</f:facet>
+                            <!-- row record -->
+                            #{myride.vehicle.model}
+                        </h:column>
+                        <h:column>
+                            <!-- column header -->
+                            <f:facet name="header">ID</f:facet>
+                            <!-- row record -->
+                            #{myride.id}
+                        </h:column>
+                        <h:column>
+                            <!-- column header -->
+                            <f:facet name="header">Pickup Location</f:facet>
+                            <!-- row record -->
+                            #{myride.pickupLocation}
+                        </h:column>
+                        <h:column>
+                            <!-- column header -->
+                            <f:facet name="header">Pickup Time</f:facet>
+                            <!-- row record -->
+                            #{myride.pickupTime}
+                        </h:column>
+                        <h:column>
+                            <!-- column header -->
+                            <f:facet name="header">Final Destination</f:facet>
+                            <!-- row record -->
+                            #{myride.finalDestination}
+                        </h:column>
+                        <h:column>
+                            <!-- column header -->
+                            <f:facet name="header">Available Seats</f:facet>
+                            <!-- row record -->
+                            #{myride.availableSeats}
+                        </h:column>
+                        <h:column>
+                            <!-- column header -->
+                            <f:facet name="header">Available</f:facet>
+                            <!-- row record -->
+                            #{myride.status}
+                        </h:column>
                     </h:dataTable>
                 </h:form>
             </f:view>
