@@ -5,19 +5,21 @@
  */
 package uts.edu.aip.model;
 
+import java.io.Serializable;
+
 /**
  *
  * @author NQ
  */
-public class Vehicle {
+public class Vehicle implements Serializable{
     private int id;
     private String model;
-    private byte[] image;
+    private String image;
 
     public Vehicle() {
     }
 
-    public Vehicle(int id, String model, byte[] image) {
+    public Vehicle(int id, String model, String image) {
         this.id = id;
         this.model = model;
         this.image = image;
@@ -39,11 +41,11 @@ public class Vehicle {
         this.model = model;
     }
 
-    public byte[] getImage() {
+    public String getImage() {
         return image;
     }
 
-    public void setImage(byte[] image) {
+    public void setImage(String image) {
         this.image = image;
     }
 }

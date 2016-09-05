@@ -15,7 +15,7 @@ import uts.edu.aip.model.Vehicle;
 public interface VehicleDAO {
    public List<Vehicle> getAllVehicle();
    public Vehicle findVehicle(int vehicleId);
-   public boolean addVehicle(Vehicle vehicle);
+   public int addVehicle(Vehicle vehicle);
    public boolean updateVehicle(Vehicle vehicle);
    public boolean deleteVehicle(Vehicle vehicle);
 }

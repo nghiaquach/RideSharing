@@ -5,11 +5,13 @@
  */
 package uts.edu.aip.model;
 
+import java.io.Serializable;
+
 /**
  *
  * @author NQ
  */
-public class Ride {
+public class Ride implements Serializable{
     private int id;
     private int userId;
     private int vehicleId;
@@ -17,11 +19,13 @@ public class Ride {
     private String pickupLocation;
     private int availableSeats;
     private boolean status;
+    private String pickupTime;
+    private String finalDestination;
 
     public Ride() {
     }
 
-    public Ride(int id, int userId, int vehicleId, String publishDate, String pickupLocation, int availableSeats, boolean status) {
+    public Ride(int id, int userId, int vehicleId, String publishDate, String pickupLocation, int availableSeats, boolean status, String pickupTime, String finalDestination) {
         this.id = id;
         this.userId = userId;
         this.vehicleId = vehicleId;
@@ -29,6 +33,24 @@ public class Ride {
         this.pickupLocation = pickupLocation;
         this.availableSeats = availableSeats;
         this.status = status;
+        this.pickupTime = pickupTime;
+        this.finalDestination = finalDestination;
+    }
+
+    public String getPickupTime() {
+        return pickupTime;
+    }
+
+    public void setPickupTime(String pickupTime) {
+        this.pickupTime = pickupTime;
+    }
+
+    public String getFinalDestination() {
+        return finalDestination;
+    }
+
+    public void setFinalDestination(String finalDestination) {
+        this.finalDestination = finalDestination;
     }
 
     public int getId() {

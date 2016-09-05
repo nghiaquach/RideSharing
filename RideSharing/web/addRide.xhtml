@@ -1,0 +1,53 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Publish a Ride</title>
+    </h:head>
+    <h:body>
+        Vehicle Info:
+        <p>
+            <label>
+                Image
+                <h:form enctype="multipart/form-data">
+                    <h:inputFile  value="#{rideController.file}">
+                        <f:ajax listener="#{rideController.save}" />
+                    </h:inputFile>
+                </h:form>
+            </label>
+        </p>
+        <h:form>
+
+            <p>
+                <label>
+                    Model 
+                    <h:inputText id="model" value="#{rideController.vehicle.model}"/>
+                    <h:message for="model"/>
+                </label>
+            </p>
+
+            Ride Info:
+            <p>
+                <label>
+                    Available Seats: 
+                    <h:inputText id="availableSeats" value="#{rideController.ride.availableSeats}"/>
+                    <h:message for="availableSeats"/>
+                </label>
+            </p>
+            <p>
+                <label>
+                    Pickup Location:
+                    <h:inputText id="pickupLocation" value="#{rideController.ride.pickupLocation}"/>
+                    <h:message for="pickupLocation"/>
+                </label>
+            </p>
+            <p>
+
+                <h:commandButton value="Publish" action="#{rideController.addRide()}"/>
+            </p>
+        </h:form>
+    </h:body>
+</html>
+

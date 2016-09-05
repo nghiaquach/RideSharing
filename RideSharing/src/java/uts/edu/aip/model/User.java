@@ -5,11 +5,16 @@
  */
 package uts.edu.aip.model;
 
+import java.io.Serializable;
+
 /**
  *
  * @author NQ
  */
-public class User {
+public class User implements Serializable{
+    
+    public static final String  PASSENGER = "Passenger";
+    public static final String DRIVER = "Driver";
     
     private int id;
     private String username;

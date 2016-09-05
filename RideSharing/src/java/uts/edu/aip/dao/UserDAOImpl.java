@@ -51,28 +51,28 @@ public class UserDAOImpl implements UserDAO{
     }
 
     @Override
-    public User getUser(int userId) {
+    public User findUser(String username) {
         User user = new User();
         try {
-            Connection conn = SQLUtil.getInstance().getConnection();
+            Connection  conn = SQLUtil.getInstance().getConnection();
+            Statement stmt = conn.createStatement();
             
-            String selectSQL = "SELECT * FROM USERS WHERE ID=?";
-            
-            PreparedStatement preparedStatement = conn.prepareStatement(selectSQL);
-            preparedStatement.setInt(1, userId);
-            ResultSet rs = preparedStatement.executeQuery(selectSQL);
-            
-            while ( rs.next() ) {
+            ResultSet rs;
+ 
+            rs = stmt.executeQuery("SELECT * FROM USERS WHERE username='"+username+"'");
+
+            if ( rs.next() ) {
                 user.setId(rs.getInt(SQLUtil.ID_FIELD));
                 user.setUsername(rs.getString(SQLUtil.USER_NAME_FIELD));
                 user.setPassword(rs.getString(SQLUtil.PASSWORD_FIELD));
                 user.setFirstName(rs.getString(SQLUtil.FIRST_NAME_FIELD));
                 user.setLastName(rs.getString(SQLUtil.LAST_NAME_FIELD));
                 user.setPhoneNo(rs.getString(SQLUtil.PHONE_NO_FIELD));
+                user.setUserType(rs.getString(SQLUtil.USER_TYPE_FIELD));
                 user.setRegistrationDate(rs.getString(SQLUtil.REGISTRATION_DATE_FIELD));
             }
             conn.close();
-        } catch (SQLException ex) {
+        } catch (Exception ex) {
             Logger.getLogger(UserDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
         return user;
@@ -105,12 +105,13 @@ public class UserDAOImpl implements UserDAO{
     public boolean addUser(User user) {
         int id = this.getLastId();
         try {
-            Connection conn = SQLUtil.getInstance().getConnection();
+            Connection  conn = SQLUtil.getInstance().getConnection();
+            
             PreparedStatement ps = 
             conn.prepareStatement( "INSERT INTO USERS VALUES( ?,?,?,?,?,?,?,? )" );
             ps.setInt(1, id);
             ps.setString( 2, user.getUsername());
-            ps.setString( 3, user.getPassword());
+            ps.setString( 3, SQLUtil.hash256(user.getPassword()));
             ps.setString( 4, user.getUserType());
             ps.setString( 5, user.getFirstName());
             ps.setString( 6, user.getLastName());
@@ -119,7 +120,7 @@ public class UserDAOImpl implements UserDAO{
             ps.executeUpdate();
             
             conn.close();
-        } catch (SQLException ex) {
+        } catch (Exception ex) {
             Logger.getLogger(UserDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         }
@@ -129,7 +130,8 @@ public class UserDAOImpl implements UserDAO{
     private int getLastId (){
         int id = 1;
         try {
-            Connection conn = SQLUtil.getInstance().getConnection();
+            
+            Connection  conn = SQLUtil.getInstance().getConnection();
             Statement stmt = conn.createStatement();
             ResultSet rs;
  
@@ -140,7 +142,7 @@ public class UserDAOImpl implements UserDAO{
             }
             stmt.close();
             rs.close();
-        } catch (SQLException ex) {
+        } catch (Exception ex) {
             Logger.getLogger(UserDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
         return id;

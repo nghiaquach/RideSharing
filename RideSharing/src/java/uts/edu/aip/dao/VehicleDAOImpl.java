@@ -36,7 +36,7 @@ public class VehicleDAOImpl implements VehicleDAO{
                 Vehicle vehicle = new Vehicle();
                 vehicle.setId(rs.getInt(SQLUtil.ID_FIELD));
                 vehicle.setModel(rs.getString(SQLUtil.MODEL_FIELD));
-                vehicle.setImage(rs.getBytes(SQLUtil.IMAGE_FIELD));
+//                vehicle.setImage(rs.getBytes(SQLUtil.IMAGE_FIELD));
                 
                 vehicles.add(vehicle);
             }
@@ -50,20 +50,17 @@ public class VehicleDAOImpl implements VehicleDAO{
     @Override
     public Vehicle findVehicle(int vehicleId) {
         Vehicle vehicle = new Vehicle();
-        try {
-            
+        try { 
             Connection conn = SQLUtil.getInstance().getConnection();
-            
-            String selectSQL = "SELECT * FROM VEHICLES WHERE ID=?";
-            
-            PreparedStatement preparedStatement = conn.prepareStatement(selectSQL);
-            preparedStatement.setInt(1, vehicleId);
-            ResultSet rs = preparedStatement.executeQuery(selectSQL);
+            Statement stmt = conn.createStatement();
+            ResultSet rs;
+ 
+            rs = stmt.executeQuery("SELECT * FROM VEHICLES WHERE ID='"+vehicleId+"'");
             
             while ( rs.next() ) {
                 vehicle.setId(rs.getInt(SQLUtil.ID_FIELD));
                 vehicle.setModel(rs.getString(SQLUtil.MODEL_FIELD));
-                vehicle.setImage(rs.getBytes(SQLUtil.IMAGE_FIELD));
+//                vehicle.setImage(rs.getBlob(SQLUtil.IMAGE_FIELD));
             }
             conn.close();
         } catch (SQLException ex) {
@@ -80,7 +77,7 @@ public class VehicleDAOImpl implements VehicleDAO{
             conn.prepareStatement( "UPDATE VEHICLES SET MODEL = ?, IMAGE = ? "
                     + "WHERE ID='"+ vehicle.getId() +"'");
             ps.setString( 1, vehicle.getModel());
-            ps.setBytes(2, vehicle.getImage());
+            ps.setString(2, vehicle.getImage());
             ps.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(UserDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
@@ -105,7 +102,7 @@ public class VehicleDAOImpl implements VehicleDAO{
     }
 
     @Override
-    public boolean addVehicle(Vehicle vehicle) {
+    public int addVehicle(Vehicle vehicle) {
         int id = this.getLastId();
         try {
             Connection conn = SQLUtil.getInstance().getConnection();
@@ -113,31 +110,32 @@ public class VehicleDAOImpl implements VehicleDAO{
             conn.prepareStatement( "INSERT INTO VEHICLES VALUES( ?,?,? )" );
             ps.setInt(1, id);
             ps.setString( 2, vehicle.getModel());
-            ps.setBytes(3, vehicle.getImage());
+            ps.setString(3, vehicle.getImage());
             ps.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(UserDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
-            return false;
+            return 0;
         }
-        return true;
+        return id;
     }
     
     private int getLastId (){
         int id = 1;
         try {
-            Connection conn = SQLUtil.getInstance().getConnection();
+            Connection  conn = SQLUtil.getInstance().getConnection();
+            Statement stmt = conn.createStatement();
             ResultSet rs;
-            try (Statement stmt = conn.createStatement()) {
-                rs = stmt.executeQuery("SELECT MAX(ID) FROM VEHICLES");
-                if ( rs.next() ) {
-                    id = rs.getInt(1);
-                    ++id;
-                }
+ 
+            rs = stmt.executeQuery("SELECT MAX(ID) FROM VEHICLES");
+            if ( rs.next() ) {
+                id = rs.getInt(1);
+                ++id;
             }
+            stmt.close();
             rs.close();
-        } catch (SQLException ex) {
+        } catch (Exception ex) {
             Logger.getLogger(UserDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
         return id;
-    }   
+    }
 }

@@ -28,7 +28,7 @@ public class UserController implements Serializable{
         boolean status = userDAO.addUser(user);
         if (status){
             user = new User();
-            return "";
+            return "success";
         }
         else{
             return "";
@@ -41,8 +41,5 @@ public class UserController implements Serializable{
 
     public void setUser(User user) {
         this.user = user;
-    }
-
-    
-    
+    } 
 }

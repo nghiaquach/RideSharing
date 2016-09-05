@@ -41,9 +41,13 @@ public class RideDAOImpl implements RideDAO{
                 ride.setPickupLocation(rs.getString(SQLUtil.PICKUP_LOCATION_FIELD));
                 ride.setPublishDate(rs.getString(SQLUtil.PUBLISH_DATE_FIELD));
                 ride.setStatus(rs.getBoolean(SQLUtil.STATUS_FIELD));
+                ride.setPickupTime(rs.getString(SQLUtil.PICKUP_TIME_FIELD));
+                ride.setFinalDestination(rs.getString(SQLUtil.FINAL_DESTINATION_FIELD));
+                
                 
                 rides.add(ride);
             }
+            stmt.close();
             conn.close();
         } catch (SQLException ex) {
             Logger.getLogger(UserDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
@@ -52,16 +56,14 @@ public class RideDAOImpl implements RideDAO{
     }
 
     @Override
-    public Ride getRide(int trasactionId) {
+    public Ride getRide(int rideID) {
         Ride ride = new Ride();
         try {
             Connection conn = SQLUtil.getInstance().getConnection();
-            
-            String selectSQL = "SELECT * FROM USER_VEHICLE WHERE ID=?";
-            
-            PreparedStatement preparedStatement = conn.prepareStatement(selectSQL);
-            preparedStatement.setInt(1, trasactionId);
-            ResultSet rs = preparedStatement.executeQuery(selectSQL);
+            Statement stmt = conn.createStatement();
+            ResultSet rs;
+ 
+            rs = stmt.executeQuery("SELECT * FROM USER_VEHICLE WHERE ID='"+rideID+"'");
             
             while ( rs.next() ) {
                 ride.setId(rs.getInt(SQLUtil.ID_FIELD));
@@ -71,6 +73,8 @@ public class RideDAOImpl implements RideDAO{
                 ride.setStatus(rs.getBoolean(SQLUtil.STATUS_FIELD));
                 ride.setUserId(rs.getInt(SQLUtil.USER_ID_FIELD));
                 ride.setVehicleId(rs.getInt(SQLUtil.VEHICLE_ID_FIELD));
+                ride.setFinalDestination(rs.getString(SQLUtil.FINAL_DESTINATION_FIELD));
+                ride.setPickupTime(rs.getString(SQLUtil.PICKUP_TIME_FIELD));
             }
             conn.close();
         } catch (SQLException ex) {
@@ -85,16 +89,21 @@ public class RideDAOImpl implements RideDAO{
         try {
             Connection conn = SQLUtil.getInstance().getConnection();
             PreparedStatement ps = 
-            conn.prepareStatement( "INSERT INTO USER_VEHICLE VALUES( ?,?,?,?,?,?,? )" );
+            conn.prepareStatement( "INSERT INTO USER_VEHICLE VALUES( ?,?,?,?,?,?,?,?,? )" );
             ps.setInt(1, ride.getVehicleId());
             ps.setString(2, ride.getPickupLocation());
             ps.setBoolean( 3, ride.isStatus());
             ps.setInt(4, ride.getAvailableSeats());
-            ps.setInt(5, ride.getId());
+            ps.setInt(5, id);
             ps.setInt(6, ride.getUserId());
-            ps.setString(7, ride.getPublishDate());
+            ps.setString(7, SQLUtil.getInstance().getStringDate());
+            ps.setString(8, ride.getPickupTime());
+            ps.setString(9, ride.getFinalDestination());
             
             ps.executeUpdate();
+            
+            ps.close();
+            conn.close();
         } catch (SQLException ex) {
             Logger.getLogger(UserDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
             return false;
@@ -109,7 +118,7 @@ public class RideDAOImpl implements RideDAO{
             PreparedStatement ps = 
             conn.prepareStatement( "UPDATE USER_VEHICLE SET USER_ID = ?, "
                     + "VEHICLE_ID = ? , PICKUP_LOCATION = ?  , PUBLISH_DATE = ? "
-                    + " , STATUS = ? , AVAILABLE SEATS= ?  "
+                    + " , STATUS = ? , AVAILABLE_SEATS= ?,PICKUP_TIME= ? ,FINAL_DESTINATION= ?"
                     + "WHERE ID='"+ ride.getId() +"'");
             ps.setInt(1, ride.getUserId());
             ps.setInt(2, ride.getVehicleId());
@@ -117,8 +126,13 @@ public class RideDAOImpl implements RideDAO{
             ps.setString(4, ride.getPublishDate());
             ps.setBoolean(5, ride.isStatus());
             ps.setInt(6, ride.getAvailableSeats());
+            ps.setString(7, ride.getPickupTime());
+            ps.setString(8, ride.getFinalDestination());
             
             ps.executeUpdate();
+           
+            ps.close();
+            conn.close();
         } catch (SQLException ex) {
             Logger.getLogger(UserDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
             return false;
@@ -147,17 +161,17 @@ public class RideDAOImpl implements RideDAO{
             Connection conn = SQLUtil.getInstance().getConnection();
             ResultSet rs;
             try (Statement stmt = conn.createStatement()) {
-                rs = stmt.executeQuery("SELECT MAX(ID) FROM VEHICLES");
+                rs = stmt.executeQuery("SELECT MAX(ID) FROM USER_VEHICLE");
                 if ( rs.next() ) {
                     id = rs.getInt(1);
                     ++id;
                 }
             }
             rs.close();
+            conn.close();
         } catch (SQLException ex) {
             Logger.getLogger(UserDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
         return id;
-    }
-    
+    } 
 }
