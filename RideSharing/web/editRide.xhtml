@@ -6,7 +6,53 @@
         <title>Edit Ride</title>
     </h:head>
     <h:body>
-        Hello from Facelets
+        Vehicle Info:
+        <h:form>
+
+            <p>
+                <label>
+                    Model 
+                    <h:inputText id="model" value="#{editRideController.editRide.vehicle.model}"/>
+                    <h:message for="model"/>
+                </label>
+            </p>
+
+            Ride Info:
+            <p>
+                <label>
+                    Available Seats: 
+                    <h:inputText id="availableSeats" value="#{editRideController.editRide.availableSeats}"/>
+                    <h:message for="availableSeats"/>
+                </label>
+            </p>
+            <p>
+                <label>
+                    Pickup Location:
+                    <h:inputText id="pickupLocation" value="#{editRideController.editRide.pickupLocation}"/>
+                    <h:message for="pickupLocation"/>
+                </label>
+            </p>
+            
+            <p>
+                <label>
+                    Pickup Time:
+                    <h:inputText id="pickupTime" value="#{editRideController.editRide.pickupTime}"/>
+                    <h:message for="pickupTime"/>
+                </label>
+            </p>
+            
+            <p>
+                <label>
+                    Final Destination:
+                    <h:inputText id="editfinalDestination" value="#{editRideController.editRide.finalDestination}"/>
+                    <h:message for="editfinalDestination"/>
+                </label>
+            </p>
+            
+            <p>
+                <h:commandButton value="Save" action="#{editRideController.saveRide()}"/>
+            </p>
+        </h:form>
     </h:body>
 </html>
 

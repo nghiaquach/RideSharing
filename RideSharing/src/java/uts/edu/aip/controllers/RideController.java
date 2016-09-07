@@ -19,6 +19,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
 import uts.edu.aip.dao.RideDAO;
 import uts.edu.aip.dao.RideDAOImpl;
+import uts.edu.aip.dao.UserDAO;
+import uts.edu.aip.dao.UserDAOImpl;
 import uts.edu.aip.dao.VehicleDAO;
 import uts.edu.aip.dao.VehicleDAOImpl;
 import uts.edu.aip.db.SQLUtil;
@@ -37,15 +39,17 @@ public class RideController implements Serializable {
 
     private List<Ride> rides = new ArrayList<Ride>();
     private Ride myRide = new Ride();
-    
     private Vehicle vehicle = new Vehicle();
     private Ride ride = new Ride();
+    
     private User user = new User();
+    private User passengerInfo = new User();
+    private User driverInfo = new User();
     private Part file;
     private String tempFileName;
     
     
-    public synchronized void save() {
+    public synchronized void saveImage() {
         
         FacesContext context = FacesContext.getCurrentInstance();
         HttpServletRequest request = (HttpServletRequest)context.getExternalContext().getRequest();
@@ -58,7 +62,6 @@ public class RideController implements Serializable {
                 +file.getSubmittedFileName();
         
         try (InputStream input = file.getInputStream()) {
-            System.out.println("uts.edu.aip.controllers.RideController.save()" + uploadDirPath);
            Files.copy(input, new File(uploadDirPath+"/"+tempFileName).toPath());
         } catch (Exception e) {
             context.addMessage(null, new FacesMessage(e.getMessage()));
@@ -94,16 +97,31 @@ public class RideController implements Serializable {
             return "fail";
         }
     }
+    
+    public String bookRide(Ride ride){
+        RideDAO rideDAO = new RideDAOImpl();
+        int passengerID = this.getUser().getId();
+        rideDAO.bookRide(ride,passengerID);
+        return "booked";
+    }
 
     public boolean isAddRide() {
         return this.getUser().getUserType().equals(User.DRIVER) && this.getMyRide().getId()>0;
     }
     
     public boolean isEditable() {
-        return this.getMyRide().getId()>0;
+        return this.getMyRide().getId()>0 && this.getPassengerInfo().getId()==0;
     }
     
     public String deleteRide(){
+        Ride r = this.getMyRide();
+        
+        VehicleDAO vehicleDAO = new VehicleDAOImpl();
+        vehicleDAO.deleteVehicle(r.getVehicle());
+        
+        RideDAO rdao = new RideDAOImpl();
+        rdao.deleteRide(r);
+        
         return "deleted";
     }
 
@@ -117,7 +135,6 @@ public class RideController implements Serializable {
 
     public Ride getMyRide() {
         RideDAO rideDAO = new RideDAOImpl();
-        System.out.println("uts.edu.aip.controllers.RideController.getMyRide()" + user.getId());
         return rideDAO.getRideIDFromUserID(user.getId());
     }
 
@@ -167,6 +184,32 @@ public class RideController implements Serializable {
 
     public void setFile(Part file) {
         this.file = file;
+    }
+
+    public User getPassengerInfo() {
+        UserDAO userDAO = new UserDAOImpl();
+        return userDAO.findUserByID(this.getMyRide().getBookedBy());
+    }
+
+    public void setPassengerInfo(User passengerInfo) {
+        this.passengerInfo = passengerInfo;
+    }
+    
+    
+
+    public User getDriverInfo() {   
+        for (Ride bookedRide : this.getRides()) {
+            int passengerBookingID = bookedRide.getBookedBy();
+            if(passengerBookingID == this.getUser().getId()){
+                UserDAO userDAO = new UserDAOImpl();
+                return userDAO.findUserByID(bookedRide.getId());
+            }
+        }
+        return driverInfo;
+    }
+
+    public void setDriverInfo(User driverInfo) {
+        this.driverInfo = driverInfo;
     }
     
     

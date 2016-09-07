@@ -11,13 +11,6 @@
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/login.xhtml</from-view-id>
-        <navigation-case>
-            <from-outcome>success</from-outcome>
-            <to-view-id>/viewRide.xhtml</to-view-id>
-        </navigation-case>
-    </navigation-rule>
-    <navigation-rule>
         <from-view-id>/index.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>logout</from-outcome>
@@ -28,7 +21,39 @@
         <from-view-id>/addRide.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>success</from-outcome>
-            <to-view-id>/viewRide.xhtml</to-view-id>
+            <to-view-id>/viewDriverRide.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/editRide.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>success</from-outcome>
+            <to-view-id>/viewDriverRide.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/viewDriverRide.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>deleted</from-outcome>
+            <to-view-id>/viewDriverRide.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/login.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>passengerLoggedIn</from-outcome>
+            <to-view-id>/viewPassengerRide.xhtml</to-view-id>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>driverLoggedIn</from-outcome>
+            <to-view-id>/viewDriverRide.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/viewPassengerRide.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>booked</from-outcome>
+            <to-view-id>/viewPassengerRide.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
 </faces-config>

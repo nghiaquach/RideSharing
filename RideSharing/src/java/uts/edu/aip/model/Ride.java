@@ -22,6 +22,7 @@ public class Ride implements Serializable{
     private String pickupTime;
     private String finalDestination;
     private Vehicle vehicle;
+    private int bookedBy;
 
     public Ride() {
     }
@@ -118,8 +119,12 @@ public class Ride implements Serializable{
     public void setVehicle(Vehicle vehicle) {
         this.vehicle = vehicle;
     }
-    
-    
-    
-    
+
+    public int getBookedBy() {
+        return bookedBy;
+    }
+
+    public void setBookedBy(int bookedBy) {
+        this.bookedBy = bookedBy;
+    }
 }

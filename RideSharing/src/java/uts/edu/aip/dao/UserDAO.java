@@ -15,6 +15,7 @@ import uts.edu.aip.model.User;
 public interface UserDAO {
    public List<User> getUsers();
    public User findUser(String username);
+   public User findUserByID(int userID);
    public boolean addUser(User user);
    public boolean updateUser(User user);
 }

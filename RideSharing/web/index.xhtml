@@ -11,7 +11,8 @@
             <h:commandButton rendered="#{!loginController.isLoggedIn}" value="Register" action="register"/>
             <h:commandButton rendered="#{loginController.isLoggedIn}" value="Logout" action="#{loginController.logout()}"/>
             <h:commandButton rendered="#{!loginController.isLoggedIn}" value="Login" action="login"/>
-            <h:commandButton rendered="#{loginController.isLoggedIn}" value="View Ride" action="viewRide"/>
+            <h:commandButton rendered="#{loginController.isLoggedIn}" value="View Ride" action="viewDriverRide"/>
+            <h:commandButton rendered="#{loginController.isLoggedIn}" value="View Passenger Ride" action="viewPassengerRide"/>
         </h:form>
     </h:body>
 </html>

@@ -75,7 +75,7 @@ public class VehicleDAOImpl implements VehicleDAO{
             Connection conn = SQLUtil.getInstance().getConnection();
             PreparedStatement ps = 
             conn.prepareStatement( "UPDATE VEHICLES SET MODEL = ?, IMAGE = ? "
-                    + "WHERE ID='"+ vehicle.getId() +"'");
+                    + "WHERE ID="+ vehicle.getId());
             ps.setString( 1, vehicle.getModel());
             ps.setString(2, vehicle.getImage());
             ps.executeUpdate();
@@ -91,7 +91,7 @@ public class VehicleDAOImpl implements VehicleDAO{
         try {
             Connection conn = SQLUtil.getInstance().getConnection();
             Statement stmt = conn.createStatement();
-            stmt.executeUpdate("DELETE FROM VEHICLES WHERE ID='"+vehicle.getId()+"'");
+            stmt.executeUpdate("DELETE FROM VEHICLES WHERE ID="+vehicle.getId());
             
             conn.close();
         } catch (SQLException ex) {

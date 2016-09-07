@@ -77,6 +77,34 @@ public class UserDAOImpl implements UserDAO{
         }
         return user;
     }
+    
+    @Override
+    public User findUserByID(int userID) {
+        User user = new User();
+        try {
+            Connection  conn = SQLUtil.getInstance().getConnection();
+            Statement stmt = conn.createStatement();
+            
+            ResultSet rs;
+ 
+            rs = stmt.executeQuery("SELECT * FROM USERS WHERE ID="+userID);
+
+            if ( rs.next() ) {
+                user.setId(rs.getInt(SQLUtil.ID_FIELD));
+                user.setUsername(rs.getString(SQLUtil.USER_NAME_FIELD));
+                user.setPassword(rs.getString(SQLUtil.PASSWORD_FIELD));
+                user.setFirstName(rs.getString(SQLUtil.FIRST_NAME_FIELD));
+                user.setLastName(rs.getString(SQLUtil.LAST_NAME_FIELD));
+                user.setPhoneNo(rs.getString(SQLUtil.PHONE_NO_FIELD));
+                user.setUserType(rs.getString(SQLUtil.USER_TYPE_FIELD));
+                user.setRegistrationDate(rs.getString(SQLUtil.REGISTRATION_DATE_FIELD));
+            }
+            conn.close();
+        } catch (Exception ex) {
+            Logger.getLogger(UserDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return user;
+    }
 
     @Override
     public boolean updateUser(User user) {
@@ -85,7 +113,7 @@ public class UserDAOImpl implements UserDAO{
             PreparedStatement ps = 
             conn.prepareStatement( "UPDATE USERS SET USER_NAME = ?, PASSWORD = ?,"
                     + "REGISTRATION_DATE=?, USER_TYPE = ?, FIRS_TNAME = ?, LAST_NAME=?, PHONE_NO = ? "
-                    + "WHERE ID='"+ user.getId() +"'");
+                    + "WHERE ID="+ user.getId() +"");
             ps.setString( 1, user.getUsername());
             ps.setString( 2, user.getPassword());
             ps.setString( 3, user.getRegistrationDate());

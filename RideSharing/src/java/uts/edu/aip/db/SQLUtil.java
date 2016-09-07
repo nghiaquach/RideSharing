@@ -45,6 +45,7 @@ public class SQLUtil {
     public static final String PUBLISH_DATE_FIELD = "PUBLISH_DATE";
     public static final String PICKUP_TIME_FIELD = "PICKUP_TIME";
     public static final String FINAL_DESTINATION_FIELD = "FINAL_DESTINATION";
+    public static final String BOOKED_BY_FIELD = "BOOKED_BY";
 
     private static SQLUtil instance = null;
     private Connection conn = null;

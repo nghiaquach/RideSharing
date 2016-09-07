@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import uts.edu.aip.dao.UserDAO;
 import uts.edu.aip.dao.UserDAOImpl;
 import uts.edu.aip.model.User;
+import uts.edu.aip.utilities.Constant;
 
 /**
  *
@@ -33,11 +34,6 @@ public class LoginController implements Serializable{
         FacesContext context = FacesContext.getCurrentInstance();
         HttpServletRequest request = (HttpServletRequest)context.getExternalContext().getRequest();
         
-        System.out.println("server path:" + request.getServletPath());
-        System.out.println("getContextPath path:" + request.getServletContext().getContextPath());
-        System.out.println("getContextPath path:" + request.getServletContext().getRealPath("/"));
-        
-        
         try {
             request.login(username, password);
             isLoggedIn = true;
@@ -50,8 +46,11 @@ public class LoginController implements Serializable{
         UserDAO userDAO = new UserDAOImpl();
         user = userDAO.findUser(username);
         request.getSession().setAttribute("user", user);
-
-        return "success";
+        
+        if (user.getUserType().equals(Constant.DRIVER_TYPE))
+                return "driverLoggedIn";
+        else
+                return "passengerLoggedIn";
     }
     
      public String logout(){

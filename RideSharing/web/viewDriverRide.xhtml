@@ -12,9 +12,12 @@
             <h:commandButton rendered="#{!rideController.isAddRide()}" value="Add Ride" action="addRide"/>
             <h:commandButton rendered="#{rideController.isEditable()}" value="Edit Ride" action="editRide"/>
             <h:commandButton rendered="#{rideController.isEditable()}" value="Delete Ride" action="#{rideController.deleteRide()}"/>
-            <f:view>
+        </h:form>
+            <f:view> 
+                <p>
+                    Ride Information:
                 <h:form>
-                    <h:dataTable rendered="#{rideController.isEditable()}" value="#{rideController.myRide}" var="myride"
+                    <h:dataTable rendered="#{rideController.myRide.id gt 0}" value="#{rideController.myRide}" var="myride"
                                  styleClass="ride-table"
                                  headerClass="ride-table-header"
                                  rowClasses="ride-table-odd-row,ride-table-even-row"
@@ -68,9 +71,37 @@
                         </h:column>
                     </h:dataTable>
                 </h:form>
+                </p>
+                 <p rendered="#{rideController.passengerInfo.id gt 0}">
+                    Passenger Information:
+                    <h:dataTable value="#{rideController.passengerInfo}" var="user"
+                                     styleClass="ride-table"
+                                     headerClass="ride-table-header"
+                                     rowClasses="ride-table-odd-row,ride-table-even-row"
+                                     >
+                            <h:column>
+                                <!-- column header -->
+                                <f:facet name="header">First Name</f:facet>
+                                <!-- row record -->
+                                #{user.firstName}
+                             </h:column>
+                             <h:column>
+                                <!-- column header -->
+                                <f:facet name="header">Last Name</f:facet>
+                                <!-- row record -->
+                                #{user.lastName}
+                             </h:column>
+                                 <h:column>
+                                <!-- column header -->
+                                <f:facet name="header">Phone No</f:facet>
+                                <!-- row record -->
+                                #{user.phoneNo}
+                             </h:column>
+                    </h:dataTable>
+                </p>
             </f:view>
 
-        </h:form>
+
     </h:body>
 </html>
 

@@ -44,6 +44,7 @@ public class RideDAOImpl implements RideDAO{
                 ride.setStatus(rs.getBoolean(SQLUtil.STATUS_FIELD));
                 ride.setPickupTime(rs.getString(SQLUtil.PICKUP_TIME_FIELD));
                 ride.setFinalDestination(rs.getString(SQLUtil.FINAL_DESTINATION_FIELD));
+                ride.setBookedBy(rs.getInt(SQLUtil.BOOKED_BY_FIELD));
                 
                 //Get Vehicle from vehice id
                 ride.setVehicle(this.getVehicle(ride.getVehicleId()));
@@ -84,6 +85,7 @@ public class RideDAOImpl implements RideDAO{
                 ride.setVehicleId(rs.getInt(SQLUtil.VEHICLE_ID_FIELD));
                 ride.setFinalDestination(rs.getString(SQLUtil.FINAL_DESTINATION_FIELD));
                 ride.setPickupTime(rs.getString(SQLUtil.PICKUP_TIME_FIELD));
+                ride.setBookedBy(rs.getInt(SQLUtil.BOOKED_BY_FIELD));
                 
                 //Get Vehicle from vehice id
                 ride.setVehicle(this.getVehicle(ride.getVehicleId()));
@@ -116,6 +118,7 @@ public class RideDAOImpl implements RideDAO{
                 ride.setVehicleId(rs.getInt(SQLUtil.VEHICLE_ID_FIELD));
                 ride.setFinalDestination(rs.getString(SQLUtil.FINAL_DESTINATION_FIELD));
                 ride.setPickupTime(rs.getString(SQLUtil.PICKUP_TIME_FIELD));
+                ride.setBookedBy(rs.getInt(SQLUtil.BOOKED_BY_FIELD));
                 
                 //Get Vehicle from vehice id
                 ride.setVehicle(this.getVehicle(ride.getVehicleId()));
@@ -134,16 +137,17 @@ public class RideDAOImpl implements RideDAO{
         try {
             Connection conn = SQLUtil.getInstance().getConnection();
             PreparedStatement ps = 
-            conn.prepareStatement( "INSERT INTO USER_VEHICLE VALUES( ?,?,?,?,?,?,?,?,? )" );
+            conn.prepareStatement( "INSERT INTO USER_VEHICLE VALUES( ?,?,?,?,?,?,?,?,?,? )" );
             ps.setInt(1, ride.getVehicleId());
             ps.setString(2, ride.getPickupLocation());
-            ps.setBoolean( 3, ride.isStatus());
-            ps.setInt(4, ride.getAvailableSeats());
-            ps.setInt(5, id);
-            ps.setInt(6, ride.getUserId());
-            ps.setString(7, SQLUtil.getInstance().getStringDate());
-            ps.setString(8, ride.getPickupTime());
-            ps.setString(9, ride.getFinalDestination());
+            ps.setInt(3, ride.getAvailableSeats());
+            ps.setInt(4, id);
+            ps.setInt(5, ride.getUserId());
+            ps.setString(6, SQLUtil.getInstance().getStringDate());
+            ps.setString(7, ride.getPickupTime());
+            ps.setString(8, ride.getFinalDestination());
+            ps.setInt(9, ride.getBookedBy());
+            ps.setBoolean( 10, ride.isStatus());
             
             ps.executeUpdate();
             
@@ -164,7 +168,8 @@ public class RideDAOImpl implements RideDAO{
             conn.prepareStatement( "UPDATE USER_VEHICLE SET USER_ID = ?, "
                     + "VEHICLE_ID = ? , PICKUP_LOCATION = ?  , PUBLISH_DATE = ? "
                     + " , STATUS = ? , AVAILABLE_SEATS= ?,PICKUP_TIME= ? ,FINAL_DESTINATION= ?"
-                    + "WHERE ID='"+ ride.getId() +"'");
+                    + "WHERE ID="+ ride.getId());
+            
             ps.setInt(1, ride.getUserId());
             ps.setInt(2, ride.getVehicleId());
             ps.setString(3, ride.getPickupLocation());
@@ -190,7 +195,7 @@ public class RideDAOImpl implements RideDAO{
         try {
             Connection conn = SQLUtil.getInstance().getConnection();
             Statement stmt = conn.createStatement();
-            stmt.executeUpdate("DELETE FROM USER_VEHICLE WHERE ID='"+ride.getId()+"'");
+            stmt.executeUpdate("DELETE FROM USER_VEHICLE WHERE ID="+ride.getId());
             
             conn.close();
         } catch (SQLException ex) {
@@ -219,4 +224,26 @@ public class RideDAOImpl implements RideDAO{
         }
         return id;
     } 
+
+    @Override
+    public boolean bookRide(Ride ride, int passengerID) {
+        try {
+            Connection conn = SQLUtil.getInstance().getConnection();
+            PreparedStatement ps = 
+            conn.prepareStatement( "UPDATE USER_VEHICLE SET BOOKED_BY = ?, STATUS = ? "
+                    + "WHERE ID="+ ride.getId());
+            
+            ps.setInt(1, passengerID);
+            ps.setBoolean(2, false);
+            
+            ps.executeUpdate();
+           
+            ps.close();
+            conn.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
+        return true;
+    }
 }
