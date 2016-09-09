@@ -14,8 +14,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import uts.edu.aip.db.SQLUtil;
+import uts.edu.aip.utilities.AppUtil;
 import uts.edu.aip.model.Vehicle;
+import uts.edu.aip.utilities.Constant;
 
 /**
  *
@@ -27,16 +28,16 @@ public class VehicleDAOImpl implements VehicleDAO{
     public List<Vehicle> getAllVehicle() {
         List<Vehicle> vehicles = new ArrayList<>();
         try {
-            Connection conn = SQLUtil.getInstance().getConnection();
+            Connection conn = AppUtil.getInstance().getConnection();
             Statement stmt = conn.createStatement();
             ResultSet rs;
  
             rs = stmt.executeQuery("SELECT * FROM VEHICLES");
             while ( rs.next() ) {
                 Vehicle vehicle = new Vehicle();
-                vehicle.setId(rs.getInt(SQLUtil.ID_FIELD));
-                vehicle.setModel(rs.getString(SQLUtil.MODEL_FIELD));
-//                vehicle.setImage(rs.getBytes(SQLUtil.IMAGE_FIELD));
+                vehicle.setId(rs.getInt(Constant.ID_FIELD));
+                vehicle.setModel(rs.getString(Constant.MODEL_FIELD));
+//                vehicle.setImage(rs.getBytes(AppUtil.IMAGE_FIELD));
                 
                 vehicles.add(vehicle);
             }
@@ -51,16 +52,16 @@ public class VehicleDAOImpl implements VehicleDAO{
     public Vehicle findVehicle(int vehicleId) {
         Vehicle vehicle = new Vehicle();
         try { 
-            Connection conn = SQLUtil.getInstance().getConnection();
+            Connection conn = AppUtil.getInstance().getConnection();
             Statement stmt = conn.createStatement();
             ResultSet rs;
  
             rs = stmt.executeQuery("SELECT * FROM VEHICLES WHERE ID="+vehicleId);
             
             while ( rs.next() ) {
-                vehicle.setId(rs.getInt(SQLUtil.ID_FIELD));
-                vehicle.setModel(rs.getString(SQLUtil.MODEL_FIELD));
-                vehicle.setImage(rs.getString(SQLUtil.IMAGE_FIELD));
+                vehicle.setId(rs.getInt(Constant.ID_FIELD));
+                vehicle.setModel(rs.getString(Constant.MODEL_FIELD));
+                vehicle.setImage(rs.getString(Constant.IMAGE_FIELD));
             }
             conn.close();
         } catch (SQLException ex) {
@@ -72,7 +73,7 @@ public class VehicleDAOImpl implements VehicleDAO{
     @Override
     public boolean updateVehicle(Vehicle vehicle) {
         try {
-            Connection conn = SQLUtil.getInstance().getConnection();
+            Connection conn = AppUtil.getInstance().getConnection();
             PreparedStatement ps = 
             conn.prepareStatement( "UPDATE VEHICLES SET MODEL = ?, IMAGE = ? "
                     + "WHERE ID="+ vehicle.getId());
@@ -89,7 +90,7 @@ public class VehicleDAOImpl implements VehicleDAO{
     @Override
     public boolean deleteVehicle(Vehicle vehicle) {
         try {
-            Connection conn = SQLUtil.getInstance().getConnection();
+            Connection conn = AppUtil.getInstance().getConnection();
             Statement stmt = conn.createStatement();
             stmt.executeUpdate("DELETE FROM VEHICLES WHERE ID="+vehicle.getId());
             
@@ -105,7 +106,7 @@ public class VehicleDAOImpl implements VehicleDAO{
     public int addVehicle(Vehicle vehicle) {
         int id = this.getLastId();
         try {
-            Connection conn = SQLUtil.getInstance().getConnection();
+            Connection conn = AppUtil.getInstance().getConnection();
             PreparedStatement ps = 
             conn.prepareStatement( "INSERT INTO VEHICLES VALUES( ?,?,? )" );
             ps.setInt(1, id);
@@ -122,7 +123,7 @@ public class VehicleDAOImpl implements VehicleDAO{
     private int getLastId (){
         int id = 1;
         try {
-            Connection  conn = SQLUtil.getInstance().getConnection();
+            Connection  conn = AppUtil.getInstance().getConnection();
             Statement stmt = conn.createStatement();
             ResultSet rs;
  

@@ -6,15 +6,18 @@
 package uts.edu.aip.controllers;
 
 import java.io.Serializable;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.enterprise.context.SessionScoped;
-import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.constraints.Size;
 import uts.edu.aip.dao.UserDAO;
 import uts.edu.aip.dao.UserDAOImpl;
 import uts.edu.aip.model.User;
+import uts.edu.aip.utilities.AppUtil;
 import uts.edu.aip.utilities.Constant;
 
 /**
@@ -38,9 +41,9 @@ public class LoginController implements Serializable{
             request.login(username, password);
             isLoggedIn = true;
         } catch (ServletException e) {
-            // (you could also log the exception to the server log)
-            context.addMessage(null, new FacesMessage(e.getMessage()));
-            return null;
+            Logger.getLogger(LoginController.class.getName()).log(Level.INFO, null, e);
+            AppUtil.getInstance().showError(e.getMessage());
+            return "";
         }
         
         UserDAO userDAO = new UserDAOImpl();
@@ -49,6 +52,7 @@ public class LoginController implements Serializable{
         
         if (user.getUserType().equals(Constant.DRIVER_TYPE))
                 return "driverLoggedIn";
+        
         else
                 return "passengerLoggedIn";
     }
@@ -64,8 +68,8 @@ public class LoginController implements Serializable{
             isLoggedIn = false;
             
         } catch (ServletException e) {
-            // (you could also log the exception to the server log)
-            context.addMessage(null, new FacesMessage(e.getMessage()));
+            Logger.getLogger(LoginController.class.getName()).log(Level.INFO, null, e);
+            AppUtil.getInstance().showError(e.getMessage());
         }
         return "logout";
     }
@@ -86,6 +90,7 @@ public class LoginController implements Serializable{
         this.isLoggedIn = isLoggedIn;
     }
 
+    @Size(min = 4, max = 20, message="The username must have at least 4 characters")
     public String getUsername() {
         return username;
     }
@@ -93,7 +98,8 @@ public class LoginController implements Serializable{
     public void setUsername(String username) {
         this.username = username;
     }
-
+    
+    @Size(min = 4, max = 20, message="The password must have at least 4 characters")
     public String getPassword() {
         return password;
     }

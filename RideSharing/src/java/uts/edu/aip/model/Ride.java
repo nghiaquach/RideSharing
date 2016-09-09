@@ -6,6 +6,9 @@
 package uts.edu.aip.model;
 
 import java.io.Serializable;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 /**
  *
@@ -39,7 +42,7 @@ public class Ride implements Serializable{
         this.finalDestination = finalDestination;
         this.vehicle = vehicle;
     }
-
+    @Pattern (regexp = "([01]?[0-9]|2[0-3]):[0-5][0-9]", message = "The format of the time is HH:mm")
     public String getPickupTime() {
         return pickupTime;
     }
@@ -48,6 +51,7 @@ public class Ride implements Serializable{
         this.pickupTime = pickupTime;
     }
 
+    @Size(min = 3, max = 20, message="Please enter  at least 3 characters for the final destination address")
     public String getFinalDestination() {
         return finalDestination;
     }
@@ -88,6 +92,7 @@ public class Ride implements Serializable{
         this.publishDate = publishDate;
     }
 
+    @Size(min = 3, max = 20,message="Please enter at least 3 characters for the pick up location")
     public String getPickupLocation() {
         return pickupLocation;
     }
@@ -96,10 +101,11 @@ public class Ride implements Serializable{
         this.pickupLocation = pickupLocation;
     }
 
+    @DecimalMin (value = "1",message = "Please enter at least 1 available seat")
     public int getAvailableSeats() {
         return availableSeats;
     }
-
+    
     public void setAvailableSeats(int availableSeats) {
         this.availableSeats = availableSeats;
     }

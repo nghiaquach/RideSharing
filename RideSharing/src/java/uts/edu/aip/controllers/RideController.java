@@ -5,12 +5,21 @@
  */
 package uts.edu.aip.controllers;
 
+import com.sun.xml.rpc.processor.modeler.j2ee.xml.string;
 import java.io.File;
 import java.io.InputStream;
 import java.io.Serializable;
 import java.nio.file.Files;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -23,7 +32,7 @@ import uts.edu.aip.dao.UserDAO;
 import uts.edu.aip.dao.UserDAOImpl;
 import uts.edu.aip.dao.VehicleDAO;
 import uts.edu.aip.dao.VehicleDAOImpl;
-import uts.edu.aip.db.SQLUtil;
+import uts.edu.aip.utilities.AppUtil;
 import uts.edu.aip.model.Ride;
 import uts.edu.aip.model.User;
 import uts.edu.aip.model.Vehicle;
@@ -58,7 +67,7 @@ public class RideController implements Serializable {
         this.createUploadDir(uploadDirPath);
         
         //format the file name with initial date format 
-        tempFileName = SQLUtil.getInstance().getStringDateByFormat(Constant.INITIAL_DATE_FORMAT_FOR_IMAGE)
+        tempFileName = AppUtil.getInstance().getStringDateByFormat(Constant.INITIAL_DATE_FORMAT_FOR_IMAGE)
                 +file.getSubmittedFileName();
         
         try (InputStream input = file.getInputStream()) {
@@ -75,8 +84,23 @@ public class RideController implements Serializable {
             path.mkdirs();
         }
     }
+    
+    private boolean validation(){
+        if(tempFileName == null){
+            AppUtil.getInstance().showError("Please select an image of your vehicle");
+            return false;
+        }
+        if(!AppUtil.getInstance().isValidTime(this.getRide().getPickupTime())){
+            AppUtil.getInstance().showError("The pickup time must be later than current time");
+            return false;
+        }
+        return true;
+    }
 
     public synchronized String addRide() {
+        
+        if(!validation())
+            return "";
         //add vehicle
         VehicleDAO vehicleDAO = new VehicleDAOImpl();
         
@@ -94,7 +118,7 @@ public class RideController implements Serializable {
         if (vehicleId!=0 && isAddedRide) {
             return "success";
         } else {
-            return "fail";
+            return "";
         }
     }
     
@@ -177,7 +201,8 @@ public class RideController implements Serializable {
     public void setUser(User user) {
         this.user = user;
     }
-
+    
+    
     public Part getFile() {
         return file;
     }
@@ -194,9 +219,7 @@ public class RideController implements Serializable {
     public void setPassengerInfo(User passengerInfo) {
         this.passengerInfo = passengerInfo;
     }
-    
-    
-
+   
     public User getDriverInfo() {   
         for (Ride bookedRide : this.getRides()) {
             int passengerBookingID = bookedRide.getBookedBy();
@@ -211,6 +234,4 @@ public class RideController implements Serializable {
     public void setDriverInfo(User driverInfo) {
         this.driverInfo = driverInfo;
     }
-    
-    
 }

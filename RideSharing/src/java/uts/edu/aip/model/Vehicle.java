@@ -6,6 +6,7 @@
 package uts.edu.aip.model;
 
 import java.io.Serializable;
+import javax.validation.constraints.Size;
 
 /**
  *
@@ -32,7 +33,7 @@ public class Vehicle implements Serializable{
     public void setId(int id) {
         this.id = id;
     }
-
+    @Size(min = 2, max = 20, message="Please enter the model of your vehicle")
     public String getModel() {
         return model;
     }
@@ -41,6 +42,7 @@ public class Vehicle implements Serializable{
         this.model = model;
     }
 
+    @Size(min = 2, max = 20, message="Please select a photo of your vehicle")
     public String getImage() {
         return image;
     }

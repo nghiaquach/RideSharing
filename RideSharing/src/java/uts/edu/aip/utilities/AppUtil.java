@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package uts.edu.aip.db;
+package uts.edu.aip.utilities;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -15,6 +15,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
@@ -23,40 +25,18 @@ import javax.sql.DataSource;
  *
  * @author NQ
  */
-public class SQLUtil {
+public class AppUtil {
 
-    public static final String ID_FIELD = "ID";
-    public static final String USER_NAME_FIELD = "USERNAME";
-    public static final String PASSWORD_FIELD = "PASSWORD";
-    public static final String USER_TYPE_FIELD = "USER_TYPE";
-    public static final String FIRST_NAME_FIELD = "FIRST_NAME";
-    public static final String LAST_NAME_FIELD = "LAST_NAME";
-    public static final String PHONE_NO_FIELD = "PHONE_NO";
-    public static final String REGISTRATION_DATE_FIELD = "REGISTRATION_DATE";
-
-    public static final String MODEL_FIELD = "MODEL";
-    public static final String IMAGE_FIELD = "IMAGE";
-
-    public static final String USER_ID_FIELD = "USER_ID";
-    public static final String VEHICLE_ID_FIELD = "VEHICLE_ID";
-    public static final String PICKUP_LOCATION_FIELD = "PICKUP_LOCATION";
-    public static final String STATUS_FIELD = "STATUS";
-    public static final String AVAILABLE_SEATS_FIELD = "AVAILABLE_SEATS";
-    public static final String PUBLISH_DATE_FIELD = "PUBLISH_DATE";
-    public static final String PICKUP_TIME_FIELD = "PICKUP_TIME";
-    public static final String FINAL_DESTINATION_FIELD = "FINAL_DESTINATION";
-    public static final String BOOKED_BY_FIELD = "BOOKED_BY";
-
-    private static SQLUtil instance = null;
+    private static AppUtil instance = null;
     private Connection conn = null;
 
-    private SQLUtil() {
+    private AppUtil() {
         // Exists only to defeat instantiation.
     }
 
-    public static SQLUtil getInstance() {
+    public static AppUtil getInstance() {
         if (instance == null) {
-            instance = new SQLUtil();
+            instance = new AppUtil();
         }
         return instance;
     }
@@ -70,10 +50,20 @@ public class SQLUtil {
                 DataSource ds = (DataSource) InitialContext.doLookup("jdbc/ridesharing");
                 conn = ds.getConnection();
             } catch (NamingException ex) {
-                Logger.getLogger(SQLUtil.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(AppUtil.class.getName()).log(Level.SEVERE, null, ex);
             }
         return conn;
     }
+    
+    public void showError(String message) {
+        FacesContext context = FacesContext.getCurrentInstance();
+        context.addMessage(null, new FacesMessage(message));
+    }
+    
+//    public void log(Object obj,String msg){
+//        Logger log = Logger.getLogger(obj.getClass().getName());
+//        log.log(Level.INFO, "{0} - {1}", new Object[]{msg, new Date().toString()});
+//    }
 
     public String getStringDate() {
         DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
@@ -82,6 +72,20 @@ public class SQLUtil {
         // Using DateFormat format method we can create a string 
         // representation of a date with the defined format.
         return df.format(today);
+    }
+    
+    public boolean isValidTime(String time){
+        String[] parts = time.split(":");
+        Calendar cal1 = Calendar.getInstance();
+        cal1.set(Calendar.HOUR_OF_DAY, Integer.parseInt(parts[0]));
+        cal1.set(Calendar.MINUTE, Integer.parseInt(parts[1]));
+        
+        Date today = Calendar.getInstance().getTime();
+        
+        System.out.println("uts.edu.aip.controllers.RideController.isValidTime()" + today.toString());
+        System.out.println("uts.edu.aip.controllers.RideController.isValidTime()" + cal1.getTime().toString());
+        
+        return today.getTime() <= cal1.getTime().getTime();
     }
     
     public String getStringDateByFormat(String format) {
@@ -108,6 +112,6 @@ public class SQLUtil {
     }
 
 //    public static void main(String[] args) {
-//        System.out.println(SQLUtil.getInstance().getStringDate());
+//        System.out.println(AppUtil.getInstance().getStringDate());
 //    }
 }

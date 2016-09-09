@@ -6,6 +6,7 @@
 package uts.edu.aip.model;
 
 import java.io.Serializable;
+import javax.validation.constraints.Size;
 
 /**
  *
@@ -40,8 +41,6 @@ public class User implements Serializable{
         this.phoneNo = phoneNo;
     }
     
-    
-
     public int getId() {
         return id;
     }
@@ -49,7 +48,8 @@ public class User implements Serializable{
     public void setId(int id) {
         this.id = id;
     }
-
+    
+    @Size(min = 4, max = 20, message="The username must have at least 4 characters")
     public String getUsername() {
         return username;
     }
@@ -57,7 +57,8 @@ public class User implements Serializable{
     public void setUsername(String username) {
         this.username = username;
     }
-
+    
+    @Size(min = 4, max = 20, message="The password must have at least 4 characters")
     public String getPassword() {
         return password;
     }
@@ -66,6 +67,7 @@ public class User implements Serializable{
         this.password = password;
     }
 
+    @Size(min = 4, max = 20)
     public String getRegistrationDate() {
         return registrationDate;
     }
@@ -82,6 +84,7 @@ public class User implements Serializable{
         this.userType = userType;
     }
 
+    @Size(min = 2, max = 20, message="The first name must have at least 2 characters")
     public String getFirstName() {
         return firstName;
     }
@@ -90,6 +93,7 @@ public class User implements Serializable{
         this.firstName = firstName;
     }
 
+    @Size(min = 2, max = 20, message="The last name must have at least 2 characters")
     public String getLastName() {
         return lastName;
     }
@@ -98,6 +102,7 @@ public class User implements Serializable{
         this.lastName = lastName;
     }
 
+    @Size(min = 5, max = 20, message="The phone number must have at least 5 characters")
     public String getPhoneNo() {
         return phoneNo;
     }

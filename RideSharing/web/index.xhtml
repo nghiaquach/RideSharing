@@ -8,11 +8,11 @@
     <h:body>
         <h:form>
             <h:outputLabel rendered="#{loginController.isLoggedIn}" value="Hi #{loginController.username}!"/>
-            <h:commandButton rendered="#{!loginController.isLoggedIn}" value="Register" action="register"/>
+            <h:commandButton rendered="#{!loginController.isLoggedIn}" value="Register" action="register?faces-redirect=true"/>
             <h:commandButton rendered="#{loginController.isLoggedIn}" value="Logout" action="#{loginController.logout()}"/>
-            <h:commandButton rendered="#{!loginController.isLoggedIn}" value="Login" action="login"/>
-            <h:commandButton rendered="#{loginController.isLoggedIn}" value="View Ride" action="viewDriverRide"/>
-            <h:commandButton rendered="#{loginController.isLoggedIn}" value="View Passenger Ride" action="viewPassengerRide"/>
+            <h:commandButton rendered="#{!loginController.isLoggedIn}" value="Login" action="login?faces-redirect=true"/>
+            <h:commandButton rendered="#{loginController.isLoggedIn}" value="View Ride" action="secret/viewDriverRide?faces-redirect=true"/>
+            <h:commandButton rendered="#{loginController.isLoggedIn}" value="View Passenger Ride" action="secret/viewPassengerRide?faces-redirect=true"/>
         </h:form>
     </h:body>
 </html>

@@ -11,11 +11,8 @@ import javax.inject.Named;
 import javax.servlet.http.HttpServletRequest;
 import uts.edu.aip.dao.RideDAO;
 import uts.edu.aip.dao.RideDAOImpl;
-import uts.edu.aip.dao.VehicleDAO;
-import uts.edu.aip.dao.VehicleDAOImpl;
 import uts.edu.aip.model.Ride;
 import uts.edu.aip.model.User;
-import uts.edu.aip.model.Vehicle;
 
 /**
  *
@@ -36,8 +33,6 @@ public class EditRideController {
     }
      
       public String saveRide(){
-        
-        System.out.println("uts.edu.aip.controllers.RideController.saveRide()" + editRide.getFinalDestination());
 //        
 //        Vehicle v = editRide.getVehicle();
 //        VehicleDAO vehicleDAO = new VehicleDAOImpl();

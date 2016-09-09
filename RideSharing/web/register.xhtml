@@ -5,6 +5,7 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
         <title>Register</title>
+        <h:outputStylesheet library="css" name="style.css"  />
     </h:head>
     <h:body>
         <p>
@@ -13,14 +14,14 @@
                     <label>
                         Username: 
                         <h:inputText id="username" value="#{userController.user.username}"/>
-                        <h:message for="username"/>
+                        <h:message styleClass="errorMessage" for="username"/>
                     </label>
                 </p>
                 <p>
                     <label>
                         Password: 
                         <h:inputSecret id="password" value="#{userController.user.password}"/>
-                        <h:message for="password"/>
+                        <h:message styleClass="errorMessage" for="password"/>
                     </label>
                 </p>
                 <p>
@@ -36,25 +37,24 @@
                     <label>
                         First Name: 
                         <h:inputText id="firstName" value="#{userController.user.firstName}"/>
-                        <h:message for="firstName"/>
+                        <h:message styleClass="errorMessage" for="firstName"/>
                     </label>
                 </p>
                 <p>
                     <label>
                         Last Name: 
                         <h:inputText id="lastName" value="#{userController.user.lastName}"/>
-                        <h:message for="lastName"/>
+                        <h:message styleClass="errorMessage" for="lastName"/>
                     </label>
                 </p>
                 <p>
                     <label>
                         Phone No: 
                         <h:inputText id="phoneNo" value="#{userController.user.phoneNo}"/>
-                        <h:message for="phoneNo"/>
+                        <h:message styleClass="errorMessage" for="phoneNo"/>
                     </label>
                 </p>
                 <p>
-
                  <h:commandButton value="Register" action="#{userController.register()}"/>
                 </p>
             </h:form>

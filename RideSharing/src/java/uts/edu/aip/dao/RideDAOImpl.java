@@ -14,9 +14,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import uts.edu.aip.db.SQLUtil;
+import uts.edu.aip.utilities.AppUtil;
 import uts.edu.aip.model.Ride;
 import uts.edu.aip.model.Vehicle;
+import uts.edu.aip.utilities.Constant;
 
 /**
  *
@@ -28,23 +29,23 @@ public class RideDAOImpl implements RideDAO{
     public List<Ride> getRides() {
         List<Ride> rides = new ArrayList<>();
         try {
-            Connection conn = SQLUtil.getInstance().getConnection();
+            Connection conn = AppUtil.getInstance().getConnection();
             Statement stmt = conn.createStatement();
             ResultSet rs;
  
             rs = stmt.executeQuery("SELECT * FROM USER_VEHICLE");
             while ( rs.next() ) {
                 Ride ride = new Ride();
-                ride.setId(rs.getInt(SQLUtil.ID_FIELD));
-                ride.setUserId(rs.getInt(SQLUtil.USER_ID_FIELD));
-                ride.setVehicleId(rs.getInt(SQLUtil.VEHICLE_ID_FIELD));
-                ride.setAvailableSeats(rs.getInt(SQLUtil.AVAILABLE_SEATS_FIELD));
-                ride.setPickupLocation(rs.getString(SQLUtil.PICKUP_LOCATION_FIELD));
-                ride.setPublishDate(rs.getString(SQLUtil.PUBLISH_DATE_FIELD));
-                ride.setStatus(rs.getBoolean(SQLUtil.STATUS_FIELD));
-                ride.setPickupTime(rs.getString(SQLUtil.PICKUP_TIME_FIELD));
-                ride.setFinalDestination(rs.getString(SQLUtil.FINAL_DESTINATION_FIELD));
-                ride.setBookedBy(rs.getInt(SQLUtil.BOOKED_BY_FIELD));
+                ride.setId(rs.getInt(Constant.ID_FIELD));
+                ride.setUserId(rs.getInt(Constant.USER_ID_FIELD));
+                ride.setVehicleId(rs.getInt(Constant.VEHICLE_ID_FIELD));
+                ride.setAvailableSeats(rs.getInt(Constant.AVAILABLE_SEATS_FIELD));
+                ride.setPickupLocation(rs.getString(Constant.PICKUP_LOCATION_FIELD));
+                ride.setPublishDate(rs.getString(Constant.PUBLISH_DATE_FIELD));
+                ride.setStatus(rs.getBoolean(Constant.STATUS_FIELD));
+                ride.setPickupTime(rs.getString(Constant.PICKUP_TIME_FIELD));
+                ride.setFinalDestination(rs.getString(Constant.FINAL_DESTINATION_FIELD));
+                ride.setBookedBy(rs.getInt(Constant.BOOKED_BY_FIELD));
                 
                 //Get Vehicle from vehice id
                 ride.setVehicle(this.getVehicle(ride.getVehicleId()));
@@ -69,23 +70,23 @@ public class RideDAOImpl implements RideDAO{
     public Ride getRide(int rideID) {
         Ride ride = new Ride();
         try {
-            Connection conn = SQLUtil.getInstance().getConnection();
+            Connection conn = AppUtil.getInstance().getConnection();
             Statement stmt = conn.createStatement();
             ResultSet rs;
  
             rs = stmt.executeQuery("SELECT * FROM USER_VEHICLE WHERE ID="+rideID);
             
             while ( rs.next() ) {
-                ride.setId(rs.getInt(SQLUtil.ID_FIELD));
-                ride.setAvailableSeats(rs.getInt(SQLUtil.AVAILABLE_SEATS_FIELD));
-                ride.setPickupLocation(rs.getString(SQLUtil.PICKUP_LOCATION_FIELD));
-                ride.setPublishDate(rs.getString(SQLUtil.PUBLISH_DATE_FIELD));
-                ride.setStatus(rs.getBoolean(SQLUtil.STATUS_FIELD));
-                ride.setUserId(rs.getInt(SQLUtil.USER_ID_FIELD));
-                ride.setVehicleId(rs.getInt(SQLUtil.VEHICLE_ID_FIELD));
-                ride.setFinalDestination(rs.getString(SQLUtil.FINAL_DESTINATION_FIELD));
-                ride.setPickupTime(rs.getString(SQLUtil.PICKUP_TIME_FIELD));
-                ride.setBookedBy(rs.getInt(SQLUtil.BOOKED_BY_FIELD));
+                ride.setId(rs.getInt(Constant.ID_FIELD));
+                ride.setAvailableSeats(rs.getInt(Constant.AVAILABLE_SEATS_FIELD));
+                ride.setPickupLocation(rs.getString(Constant.PICKUP_LOCATION_FIELD));
+                ride.setPublishDate(rs.getString(Constant.PUBLISH_DATE_FIELD));
+                ride.setStatus(rs.getBoolean(Constant.STATUS_FIELD));
+                ride.setUserId(rs.getInt(Constant.USER_ID_FIELD));
+                ride.setVehicleId(rs.getInt(Constant.VEHICLE_ID_FIELD));
+                ride.setFinalDestination(rs.getString(Constant.FINAL_DESTINATION_FIELD));
+                ride.setPickupTime(rs.getString(Constant.PICKUP_TIME_FIELD));
+                ride.setBookedBy(rs.getInt(Constant.BOOKED_BY_FIELD));
                 
                 //Get Vehicle from vehice id
                 ride.setVehicle(this.getVehicle(ride.getVehicleId()));
@@ -102,23 +103,23 @@ public class RideDAOImpl implements RideDAO{
     public Ride getRideIDFromUserID(int userID) {
         Ride ride = new Ride();
         try {
-            Connection conn = SQLUtil.getInstance().getConnection();
+            Connection conn = AppUtil.getInstance().getConnection();
             Statement stmt = conn.createStatement();
             ResultSet rs;
  
             rs = stmt.executeQuery("SELECT * FROM USER_VEHICLE WHERE USER_ID="+userID);
             
             while ( rs.next() ) {
-                ride.setId(rs.getInt(SQLUtil.ID_FIELD));
-                ride.setAvailableSeats(rs.getInt(SQLUtil.AVAILABLE_SEATS_FIELD));
-                ride.setPickupLocation(rs.getString(SQLUtil.PICKUP_LOCATION_FIELD));
-                ride.setPublishDate(rs.getString(SQLUtil.PUBLISH_DATE_FIELD));
-                ride.setStatus(rs.getBoolean(SQLUtil.STATUS_FIELD));
-                ride.setUserId(rs.getInt(SQLUtil.USER_ID_FIELD));
-                ride.setVehicleId(rs.getInt(SQLUtil.VEHICLE_ID_FIELD));
-                ride.setFinalDestination(rs.getString(SQLUtil.FINAL_DESTINATION_FIELD));
-                ride.setPickupTime(rs.getString(SQLUtil.PICKUP_TIME_FIELD));
-                ride.setBookedBy(rs.getInt(SQLUtil.BOOKED_BY_FIELD));
+                ride.setId(rs.getInt(Constant.ID_FIELD));
+                ride.setAvailableSeats(rs.getInt(Constant.AVAILABLE_SEATS_FIELD));
+                ride.setPickupLocation(rs.getString(Constant.PICKUP_LOCATION_FIELD));
+                ride.setPublishDate(rs.getString(Constant.PUBLISH_DATE_FIELD));
+                ride.setStatus(rs.getBoolean(Constant.STATUS_FIELD));
+                ride.setUserId(rs.getInt(Constant.USER_ID_FIELD));
+                ride.setVehicleId(rs.getInt(Constant.VEHICLE_ID_FIELD));
+                ride.setFinalDestination(rs.getString(Constant.FINAL_DESTINATION_FIELD));
+                ride.setPickupTime(rs.getString(Constant.PICKUP_TIME_FIELD));
+                ride.setBookedBy(rs.getInt(Constant.BOOKED_BY_FIELD));
                 
                 //Get Vehicle from vehice id
                 ride.setVehicle(this.getVehicle(ride.getVehicleId()));
@@ -135,7 +136,7 @@ public class RideDAOImpl implements RideDAO{
     public boolean addRide(Ride ride) {
         int id = this.getLastId();
         try {
-            Connection conn = SQLUtil.getInstance().getConnection();
+            Connection conn = AppUtil.getInstance().getConnection();
             PreparedStatement ps = 
             conn.prepareStatement( "INSERT INTO USER_VEHICLE VALUES( ?,?,?,?,?,?,?,?,?,? )" );
             ps.setInt(1, ride.getVehicleId());
@@ -143,7 +144,7 @@ public class RideDAOImpl implements RideDAO{
             ps.setInt(3, ride.getAvailableSeats());
             ps.setInt(4, id);
             ps.setInt(5, ride.getUserId());
-            ps.setString(6, SQLUtil.getInstance().getStringDate());
+            ps.setString(6, AppUtil.getInstance().getStringDate());
             ps.setString(7, ride.getPickupTime());
             ps.setString(8, ride.getFinalDestination());
             ps.setInt(9, ride.getBookedBy());
@@ -163,7 +164,7 @@ public class RideDAOImpl implements RideDAO{
     @Override
     public boolean updateRide(Ride ride) {
         try {
-            Connection conn = SQLUtil.getInstance().getConnection();
+            Connection conn = AppUtil.getInstance().getConnection();
             PreparedStatement ps = 
             conn.prepareStatement( "UPDATE USER_VEHICLE SET USER_ID = ?, "
                     + "VEHICLE_ID = ? , PICKUP_LOCATION = ?  , PUBLISH_DATE = ? "
@@ -193,7 +194,7 @@ public class RideDAOImpl implements RideDAO{
     @Override
     public boolean deleteRide(Ride ride) {
         try {
-            Connection conn = SQLUtil.getInstance().getConnection();
+            Connection conn = AppUtil.getInstance().getConnection();
             Statement stmt = conn.createStatement();
             stmt.executeUpdate("DELETE FROM USER_VEHICLE WHERE ID="+ride.getId());
             
@@ -208,7 +209,7 @@ public class RideDAOImpl implements RideDAO{
     private int getLastId (){
         int id = 1;
         try {
-            Connection conn = SQLUtil.getInstance().getConnection();
+            Connection conn = AppUtil.getInstance().getConnection();
             ResultSet rs;
             try (Statement stmt = conn.createStatement()) {
                 rs = stmt.executeQuery("SELECT MAX(ID) FROM USER_VEHICLE");
@@ -228,7 +229,7 @@ public class RideDAOImpl implements RideDAO{
     @Override
     public boolean bookRide(Ride ride, int passengerID) {
         try {
-            Connection conn = SQLUtil.getInstance().getConnection();
+            Connection conn = AppUtil.getInstance().getConnection();
             PreparedStatement ps = 
             conn.prepareStatement( "UPDATE USER_VEHICLE SET BOOKED_BY = ?, STATUS = ? "
                     + "WHERE ID="+ ride.getId());
