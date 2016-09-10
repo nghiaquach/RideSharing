@@ -28,7 +28,7 @@ public class UserController implements Serializable{
         UserDAO userDAO = new UserDAOImpl();
         
         User searchUser = userDAO.findUser(user.getUsername());
-        if(searchUser!=null){
+        if(searchUser.getUsername()!=null && searchUser.getUsername().equalsIgnoreCase(user.getUsername())){
             AppUtil.getInstance().showError("This username is existing! Please choose another one");
             return "";
         }

@@ -49,7 +49,7 @@ public class User implements Serializable{
         this.id = id;
     }
     
-    @Size(min = 4, max = 20, message="The username must have at least 4 characters")
+    @Size(min = 3, max = 20, message="The username must have at least 3 characters")
     public String getUsername() {
         return username;
     }

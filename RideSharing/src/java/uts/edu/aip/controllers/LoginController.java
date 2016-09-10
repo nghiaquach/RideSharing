@@ -74,6 +74,15 @@ public class LoginController implements Serializable{
         }
         return "logout";
     }
+     
+    public String returnMainPage(){
+        HttpServletRequest origRequest = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
+        
+        System.out.println("uts.edu.aip.controllers.LoginController.getRequestURL()" + origRequest.getRequestURL());
+        System.out.println("uts.edu.aip.controllers.LoginController.getContextPath()" + origRequest.getContextPath());
+        System.out.println("uts.edu.aip.controllers.LoginController.getPathInfo()" + origRequest.getPathInfo());
+        return "index";
+    }
 
     public User getUser() {
         return user;

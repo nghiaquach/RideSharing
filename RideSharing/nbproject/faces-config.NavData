@@ -5,7 +5,7 @@
         <Node id="login.xhtml" x="555" y="17" zoom="true"/>
         <Node id="error/404.xhtml" x="650" y="150" zoom="true"/>
         <Node id="index.xhtml" x="400" y="150" zoom="true"/>
-        <Node id="secret/addRide.xhtml" x="900" y="150" zoom="true"/>
+        <Node id="secret/addRide.xhtml" x="551" y="255" zoom="true"/>
         <Node id="secret/viewPassengerRide.xhtml" x="-24" y="136" zoom="true"/>
         <Node id="secret/viewDriverRide.xhtml" x="150" y="450" zoom="true"/>
         <Node id="secret/editRide.xhtml" x="150" y="300" zoom="true"/>
