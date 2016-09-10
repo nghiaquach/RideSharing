@@ -16,7 +16,7 @@ and open the template in the editor.
 	text-align:center;
 	background:none repeat scroll 0 0 #E5E5E5;
 	border-bottom:1px solid #BBBBBB;
-	padding:16px;
+	padding:10px;
 }
 
 .ride-table-odd-row{
@@ -36,3 +36,128 @@ and open the template in the editor.
     font-style: italic;
     padding-left: 5px;
 }
+
+#header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 100px;
+/*    background-color: lightblue;*/
+}
+#footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 30px;
+}
+#content {
+    position: fixed;
+    top: 100px;
+    bottom: 30px;
+    left: 0;
+    right: 0;
+    background-color: #008CBA;
+    overflow: auto;
+}
+
+.medium-button {
+    padding: 5px;
+    border: none;
+    text-decoration: none;
+    border-radius: 2px;
+    color: white;
+    font-weight: bold;
+    background-color: #4CAF50;
+    width: 100px;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.logout-button {
+    padding: 5px;
+    border: none;
+    text-decoration: none;
+    border-radius: 2px;
+    color: white;
+    font-weight: bold;
+    background-color: red;
+    width: 100px;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333;
+}
+
+li {
+    float: left;
+}
+
+li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+.container {
+   
+   height: auto;
+   overflow: hidden;
+}
+
+.right {
+    text-align: center;
+    width: 500px;
+    float: right;
+}
+
+.title{
+    font-size: x-large;
+    font-weight: bold;
+}
+
+.left {
+    margin-top: 10px;
+    padding-left: 20px;
+    float: left; 
+    /*background: #e8f6fe;*/
+    /* the next props are meant to keep this block independent from the other floated one */
+    width: auto;
+    overflow: hidden;
+}​​
+
+/* Change the link color to #111 (black) on hover */
+li a:hover {
+    background-color: #111;
+}
+
+.center {
+    display: table;
+    margin: 0 auto;
+    align-content: center;
+    border: 3px solid black;
+    margin-top: 20px;
+    padding-left: 90px;
+    padding-right: 90px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    background-color: white;
+}
+
+.title-header{
+    background-color: gray;
+    color: white;
+    width: 100%;
+    font-weight: bold;
+    padding-left: 10px;
+}
+

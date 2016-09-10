@@ -11,6 +11,7 @@ import javax.inject.Named;
 import uts.edu.aip.dao.UserDAO;
 import uts.edu.aip.dao.UserDAOImpl;
 import uts.edu.aip.model.User;
+import uts.edu.aip.utilities.AppUtil;
 
 /**
  *
@@ -25,6 +26,13 @@ public class UserController implements Serializable{
     public String register(){
    
         UserDAO userDAO = new UserDAOImpl();
+        
+        User searchUser = userDAO.findUser(user.getUsername());
+        if(searchUser!=null){
+            AppUtil.getInstance().showError("This username is existing! Please choose another one");
+            return "";
+        }
+        
         boolean status = userDAO.addUser(user);
         if (status){
             user = new User();

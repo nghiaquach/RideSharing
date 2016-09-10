@@ -32,6 +32,7 @@ public class LoginController implements Serializable{
     private String password = "";
     private User user = new User();
     private boolean isLoggedIn = false;
+    private boolean isDriver = false;
     
     public String login(){
         FacesContext context = FacesContext.getCurrentInstance();
@@ -90,7 +91,7 @@ public class LoginController implements Serializable{
         this.isLoggedIn = isLoggedIn;
     }
 
-    @Size(min = 4, max = 20, message="The username must have at least 4 characters")
+    @Size(min = 3, max = 20, message="The username must have at least 3 characters")
     public String getUsername() {
         return username;
     }
@@ -106,5 +107,16 @@ public class LoginController implements Serializable{
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public boolean isIsDriver() {
+        if(this.getUser().getUserType()!=null){
+            return this.getUser().getUserType().equals(Constant.DRIVER_TYPE);
+        }
+        return isDriver;
+    }
+
+    public void setIsDriver(boolean isDriver) {
+        this.isDriver = isDriver;
     }
 }

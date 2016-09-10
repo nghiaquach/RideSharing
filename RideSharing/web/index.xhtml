@@ -3,17 +3,44 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html">
     <h:head>
-        <title>Welcome to Ride Sharing</title>
+        <title>Home</title>
+        <h:outputStylesheet library="css" name="style.css"  />
     </h:head>
     <h:body>
-        <h:form>
-            <h:outputLabel rendered="#{loginController.isLoggedIn}" value="Hi #{loginController.username}!"/>
-            <h:commandButton rendered="#{!loginController.isLoggedIn}" value="Register" action="register?faces-redirect=true"/>
-            <h:commandButton rendered="#{loginController.isLoggedIn}" value="Logout" action="#{loginController.logout()}"/>
-            <h:commandButton rendered="#{!loginController.isLoggedIn}" value="Login" action="login?faces-redirect=true"/>
-            <h:commandButton rendered="#{loginController.isLoggedIn}" value="View Ride" action="secret/viewDriverRide?faces-redirect=true"/>
-            <h:commandButton rendered="#{loginController.isLoggedIn}" value="View Passenger Ride" action="secret/viewPassengerRide?faces-redirect=true"/>
-        </h:form>
+        <div id="header">
+            <div class="container">
+                <div class="left">
+                    <p class="title">
+                        Welcome to Ride Sharing
+                    </p>
+                </div>
+                <div class="right">
+                    <h:form>
+                    <p>
+                    <h:outputLabel rendered="#{loginController.isLoggedIn}" value="Hi #{loginController.username}!"/>
+                    </p>
+                    <p>
+                    <h:commandButton styleClass="medium-button" rendered="#{!loginController.isLoggedIn}" value="Register" action="register?faces-redirect=true"/>
+                    <h:commandButton styleClass="logout-button" rendered="#{loginController.isLoggedIn}" value="Logout" action="#{loginController.logout()}"/>
+                    <h:commandButton styleClass="medium-button" rendered="#{!loginController.isLoggedIn}" value="Login" action="login?faces-redirect=true"/>
+                    <h:commandButton styleClass="medium-button" rendered="#{loginController.isDriver and loginController.isLoggedIn}" value="View Ride" action="secret/viewDriverRide?faces-redirect=true"/>
+                    <h:commandButton styleClass="medium-button" rendered="#{!loginController.isDriver and loginController.isLoggedIn}" value="View Passenger Ride" action="secret/viewPassengerRide?faces-redirect=true"/>
+                    </p>
+                </h:form>
+                </div>
+                
+            </div>
+            
+        </div>
+        <div id="content" style="background-image: url(resources/images/Ride_Sharing_Big.jpg);">
+            <h:form>
+            <ul>
+                <li><h:commandLink action="index">Home</h:commandLink></li>
+                <li><a href="contact.xhtml">Contact</a></li>
+                <li><a href="about.xhtml">About</a></li>
+            </ul>
+            </h:form>
+        </div>
     </h:body>
 </html>
 

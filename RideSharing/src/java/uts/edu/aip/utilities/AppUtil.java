@@ -57,7 +57,7 @@ public class AppUtil {
     
     public void showError(String message) {
         FacesContext context = FacesContext.getCurrentInstance();
-        context.addMessage(null, new FacesMessage(message));
+        context.addMessage("myForm:appMessage", new FacesMessage(message));
     }
     
 //    public void log(Object obj,String msg){

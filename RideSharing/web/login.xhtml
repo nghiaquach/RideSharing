@@ -7,26 +7,49 @@
         <h:outputStylesheet library="css" name="style.css"  />
     </h:head>
     <h:body>
-        <h:form>
-                <p>
-                    <label>
-                        Username: 
-                        <h:inputText id="username" value="#{loginController.username}"/>
-                        <br/>
-                        <h:message  styleClass="errorMessage" for="username"/>
-                    </label>
-                </p>
-                <p>
-                    <label>
-                        Password: 
-                        <h:inputSecret id="password" value="#{loginController.password}"/>
-                        <br/>
-                        <h:message styleClass="errorMessage" for="password"/>
-                    </label>
-                </p>
-            
-            <h:commandButton value="login" action="#{loginController.login()}"/>
-        </h:form>  
+        <div id="header">
+            <div class="container">
+                <div class="left">
+                    <p class="title">
+                        Welcome to Ride Sharing
+                    </p>
+                </div>
+            </div>
+
+        </div>
+        <div id="content">
+            <ul>
+                <li><a href="index.xhtml">Home</a></li>
+                <li><a href="contact.xhtml">Contact</a></li>
+                <li><a href="about.xhtml">About</a></li>
+            </ul>
+            <div class="center">
+                <h:form id="myForm">
+                    <p>
+                        <h:message styleClass="errorMessage" for="appMessage" id="appMessage"></h:message>
+                    </p>
+                    <p>
+                        <label>
+                            Username: 
+                            <h:inputText id="username" value="#{loginController.username}"/>
+                            <br/>
+                            <h:message  styleClass="errorMessage" for="username"/>
+                        </label>
+                    </p>
+                    <p>
+                        <label>
+                            Password: 
+                            <h:inputSecret id="password" value="#{loginController.password}"/>
+                            <br/>
+                            <h:message styleClass="errorMessage" for="password"/>
+                        </label>
+                    </p>
+
+                    <h:commandButton style="margin-left: 100px;" styleClass="medium-button" value="login" action="#{loginController.login()}"/>
+                </h:form> 
+            </div>
+        </div>
+
     </h:body>
 </html>
 
