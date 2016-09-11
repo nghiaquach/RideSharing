@@ -24,12 +24,9 @@
                 <li><a href="about.xhtml">About</a></li>
             </ul>
             <div class="center">
-                <h:form id="myForm">
-                     <p class="title"> Login </p>
-                    <p>
-                        <h:message styleClass="errorMessage" for="appMessage" id="appMessage"></h:message>
-                    </p>
-                    
+               
+                <h:form>
+                    <p class="title"> Login </p>
                     <p>
                         <label>
                             Username: 
@@ -49,6 +46,12 @@
 
                     <h:commandButton style="margin-left: 100px;" styleClass="medium-button" value="login" action="#{loginController.login()}"/>
                 </h:form> 
+                 <h:form id="myForm">
+                     
+                    <p>
+                        <h:message styleClass="errorMessage" for="appMessage" id="appMessage"></h:message>
+                    </p>
+                </h:form>
             </div>
         </div>
 

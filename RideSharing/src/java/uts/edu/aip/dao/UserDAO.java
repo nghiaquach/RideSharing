@@ -5,6 +5,7 @@
  */
 package uts.edu.aip.dao;
 
+import java.sql.SQLException;
 import java.util.List;
 import uts.edu.aip.model.User;
 
@@ -13,9 +14,9 @@ import uts.edu.aip.model.User;
  * @author NQ
  */
 public interface UserDAO {
-   public List<User> getUsers();
-   public User findUser(String username);
-   public User findUserByID(int userID);
-   public boolean addUser(User user);
-   public boolean updateUser(User user);
+   public List<User> getUsers() throws SQLException;
+   public User findUser(String username) throws SQLException;
+   public User findUserByID(int userID) throws SQLException;
+   public void addUser(User user) throws SQLException;
+   public void updateUser(User user) throws SQLException;
 }

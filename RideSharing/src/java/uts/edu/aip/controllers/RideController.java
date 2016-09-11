@@ -9,8 +9,11 @@ import java.io.File;
 import java.io.InputStream;
 import java.io.Serializable;
 import java.nio.file.Files;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -89,55 +92,79 @@ public class RideController implements Serializable {
     }
 
     public synchronized String addRide() {
-        
+        // validate fields
         if(!validation())
             return "";
-        //add vehicle
-        VehicleDAO vehicleDAO = new VehicleDAOImpl();
         
+        //add vehicle
         vehicle.setImage(tempFileName);
-        int vehicleId = vehicleDAO.addVehicle(vehicle);
-
+        
+        int vehicleId = this.getVehicleId();
         //add a ride
         RideDAO rideDAO = new RideDAOImpl();
         ride.setStatus(true);
         ride.setUserId(user.getId());
         ride.setVehicleId(vehicleId);
         
-        boolean isAddedRide = rideDAO.addRide(ride);
-
-        if (vehicleId!=0 && isAddedRide) {
+        try {
+            rideDAO.addRide(ride);
             return "success";
-        } else {
+        } catch (SQLException ex) {
+            AppUtil.getInstance().showError(Constant.SQL_ERROR_MESSAGE);
+            Logger.getLogger(RideController.class.getName()).log(Level.SEVERE, null, ex);
             return "";
         }
+//        if (vehicleId!=0 && isAddedRide) {
+//            return "success";
+//        } else {
+//            return "";
+//        }
     }
     
     public String bookRide(Ride ride){
         RideDAO rideDAO = new RideDAOImpl();
         int passengerID = this.getUser().getId();
-        rideDAO.bookRide(ride,passengerID);
+        try {
+            rideDAO.bookRide(ride,passengerID);
+        } catch (SQLException ex) {
+            AppUtil.getInstance().showError(Constant.SQL_ERROR_MESSAGE);
+            Logger.getLogger(RideController.class.getName()).log(Level.SEVERE, null, ex);
+        }
         return "booked";
     }
-
-    public boolean isAddRide() {
-        return this.getUser().getUserType().equals(User.DRIVER) && this.getMyRide().getId()>0;
-    }
-    
-    public boolean isEditable() {
-        return this.getMyRide().getId()>0 && this.getPassengerInfo().getId()==0;
-    }
-    
+  
     public String deleteRide(){
         Ride r = this.getMyRide();
         
         VehicleDAO vehicleDAO = new VehicleDAOImpl();
-        vehicleDAO.deleteVehicle(r.getVehicle());
+        try {
+            vehicleDAO.deleteVehicle(r.getVehicle());
+        } catch (SQLException ex) {
+            AppUtil.getInstance().showError(Constant.SQL_ERROR_MESSAGE);
+            Logger.getLogger(RideController.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
         RideDAO rdao = new RideDAOImpl();
-        rdao.deleteRide(r);
+        try {
+            rdao.deleteRide(r);
+        } catch (SQLException ex) {
+            AppUtil.getInstance().showError(Constant.SQL_ERROR_MESSAGE);
+            Logger.getLogger(RideController.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
         return "deleted";
+    }
+    
+    private int getVehicleId(){
+        int vehicleId = 0;
+        VehicleDAO vehicleDAO = new VehicleDAOImpl();
+        try {
+            vehicleId =  vehicleDAO.addVehicle(vehicle);
+        } catch (SQLException ex) {
+            AppUtil.getInstance().showError(Constant.SQL_ERROR_MESSAGE);
+            Logger.getLogger(RideController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return vehicleId;
     }
 
     public Vehicle getVehicle() {
@@ -150,7 +177,13 @@ public class RideController implements Serializable {
 
     public Ride getMyRide() {
         RideDAO rideDAO = new RideDAOImpl();
-        return rideDAO.getRideIDFromUserID(user.getId());
+        try {
+            return rideDAO.getRideIDFromUserID(user.getId());
+        } catch (SQLException ex) {
+            AppUtil.getInstance().showError(Constant.SQL_ERROR_MESSAGE);
+            Logger.getLogger(RideController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return new Ride();
     }
 
     public void setMyRide(Ride myRide) {
@@ -174,7 +207,24 @@ public class RideController implements Serializable {
 
     public List<Ride> getRides() {
         RideDAO rideDAO = new RideDAOImpl();
-        return rideDAO.getRides();
+        try {
+            return rideDAO.getRides();
+        } catch (SQLException ex) {
+            AppUtil.getInstance().showError(Constant.SQL_ERROR_MESSAGE);
+            Logger.getLogger(RideController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return new ArrayList<Ride>();
+    }
+    
+    public void checkRedirectPage(){
+        FacesContext context = FacesContext.getCurrentInstance();
+        
+        String outcome = "";
+        if (this.getUser().getUserType().equals(Constant.DRIVER_TYPE))
+            outcome = "driver";
+        else 
+            outcome = "passenger";
+        context.getApplication().getNavigationHandler().handleNavigation(context, null, outcome);
     }
 
     public void setRides(List<Ride> rides) {
@@ -204,7 +254,13 @@ public class RideController implements Serializable {
 
     public User getPassengerInfo() {
         UserDAO userDAO = new UserDAOImpl();
-        return userDAO.findUserByID(this.getMyRide().getBookedBy());
+        try {
+            return userDAO.findUserByID(this.getMyRide().getBookedBy());
+        } catch (SQLException ex) {
+            AppUtil.getInstance().showError(Constant.SQL_ERROR_MESSAGE);
+            Logger.getLogger(RideController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return new User();
     }
 
     public void setPassengerInfo(User passengerInfo) {
@@ -216,7 +272,12 @@ public class RideController implements Serializable {
             int passengerBookingID = bookedRide.getBookedBy();
             if(passengerBookingID == this.getUser().getId()){
                 UserDAO userDAO = new UserDAOImpl();
-                return userDAO.findUserByID(bookedRide.getId());
+                try {
+                    return userDAO.findUserByID(bookedRide.getId());
+                } catch (SQLException ex) {
+                    AppUtil.getInstance().showError(Constant.SQL_ERROR_MESSAGE);
+                    Logger.getLogger(RideController.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         }
         return driverInfo;
@@ -224,5 +285,13 @@ public class RideController implements Serializable {
 
     public void setDriverInfo(User driverInfo) {
         this.driverInfo = driverInfo;
+    }
+    
+    public boolean isAddRide() {
+        return this.getUser().getUserType().equals(User.DRIVER) && this.getMyRide().getId()>0;
+    }
+    
+    public boolean isEditable() {
+        return this.getMyRide().getId()>0 && this.getPassengerInfo().getId()==0;
     }
 }

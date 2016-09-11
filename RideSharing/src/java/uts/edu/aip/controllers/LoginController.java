@@ -6,6 +6,7 @@
 package uts.edu.aip.controllers;
 
 import java.io.Serializable;
+import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.enterprise.context.SessionScoped;
@@ -43,15 +44,20 @@ public class LoginController implements Serializable{
             isLoggedIn = true;
         } catch (ServletException e) {
             Logger.getLogger(LoginController.class.getName()).log(Level.INFO, null, e);
-            AppUtil.getInstance().showError(e.getMessage());
+            AppUtil.getInstance().showError("The username and password you entered don't match");
             return "";
         }
         
         UserDAO userDAO = new UserDAOImpl();
-        user = userDAO.findUser(username);
+        try {
+            user = userDAO.findUser(username);
+        } catch (SQLException ex) {
+            AppUtil.getInstance().showError(Constant.SQL_ERROR_MESSAGE);
+            Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
+        }
         request.getSession().setAttribute("user", user);
         
-        if (user.getUserType().equals(Constant.DRIVER_TYPE))
+        if (user.getUserType()!=null && user.getUserType().equals(Constant.DRIVER_TYPE))
                 return "driverLoggedIn";
         
         else

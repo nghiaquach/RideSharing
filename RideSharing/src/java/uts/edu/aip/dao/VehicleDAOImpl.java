@@ -12,8 +12,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import uts.edu.aip.utilities.AppUtil;
 import uts.edu.aip.model.Vehicle;
 import uts.edu.aip.utilities.Constant;
@@ -25,118 +23,91 @@ import uts.edu.aip.utilities.Constant;
 public class VehicleDAOImpl implements VehicleDAO{
 
     @Override
-    public List<Vehicle> getAllVehicle() {
+    public List<Vehicle> getAllVehicle() throws SQLException{
         List<Vehicle> vehicles = new ArrayList<>();
-        try {
-            Connection conn = AppUtil.getInstance().getConnection();
+        
+        try (Connection conn = AppUtil.getInstance().getConnection();
             Statement stmt = conn.createStatement();
-            ResultSet rs;
- 
-            rs = stmt.executeQuery("SELECT * FROM VEHICLES");
+            ResultSet rs = stmt.executeQuery("SELECT id, model, image FROM VEHICLES")){
+            
             while ( rs.next() ) {
                 Vehicle vehicle = new Vehicle();
                 vehicle.setId(rs.getInt(Constant.ID_FIELD));
                 vehicle.setModel(rs.getString(Constant.MODEL_FIELD));
-//                vehicle.setImage(rs.getBytes(AppUtil.IMAGE_FIELD));
+                vehicle.setImage(rs.getString(Constant.IMAGE_FIELD));
                 
                 vehicles.add(vehicle);
             }
-            conn.close();
-        } catch (SQLException ex) {
-            Logger.getLogger(UserDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
         return vehicles;
     }
 
     @Override
-    public Vehicle findVehicle(int vehicleId) {
+    public Vehicle findVehicle(int vehicleId) throws SQLException{
         Vehicle vehicle = new Vehicle();
-        try { 
+        try (
             Connection conn = AppUtil.getInstance().getConnection();
             Statement stmt = conn.createStatement();
-            ResultSet rs;
- 
-            rs = stmt.executeQuery("SELECT * FROM VEHICLES WHERE ID="+vehicleId);
+            ResultSet rs= stmt.executeQuery("SELECT id, model, image FROM VEHICLES WHERE ID="+vehicleId)){
             
             while ( rs.next() ) {
                 vehicle.setId(rs.getInt(Constant.ID_FIELD));
                 vehicle.setModel(rs.getString(Constant.MODEL_FIELD));
                 vehicle.setImage(rs.getString(Constant.IMAGE_FIELD));
             }
-            conn.close();
-        } catch (SQLException ex) {
-            Logger.getLogger(UserDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        } 
         return vehicle;
     }
 
     @Override
-    public boolean updateVehicle(Vehicle vehicle) {
-        try {
+    public void updateVehicle(Vehicle vehicle) throws SQLException{
+        try (
             Connection conn = AppUtil.getInstance().getConnection();
             PreparedStatement ps = 
             conn.prepareStatement( "UPDATE VEHICLES SET MODEL = ?, IMAGE = ? "
-                    + "WHERE ID="+ vehicle.getId());
+                    + "WHERE ID="+ vehicle.getId())){
             ps.setString( 1, vehicle.getModel());
             ps.setString(2, vehicle.getImage());
             ps.executeUpdate();
-        } catch (SQLException ex) {
-            Logger.getLogger(UserDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
-            return false;
         }
-        return true;
     }
 
     @Override
-    public boolean deleteVehicle(Vehicle vehicle) {
-        try {
+    public void deleteVehicle(Vehicle vehicle) throws SQLException{
+        try (
             Connection conn = AppUtil.getInstance().getConnection();
-            Statement stmt = conn.createStatement();
+            Statement stmt = conn.createStatement()){
             stmt.executeUpdate("DELETE FROM VEHICLES WHERE ID="+vehicle.getId());
-            
-            conn.close();
-        } catch (SQLException ex) {
-            Logger.getLogger(UserDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
-            return false;
-        }
-        return true;
+        } 
     }
 
     @Override
-    public int addVehicle(Vehicle vehicle) {
+    public int addVehicle(Vehicle vehicle) throws SQLException{
         int id = this.getLastId();
-        try {
+        try (
             Connection conn = AppUtil.getInstance().getConnection();
             PreparedStatement ps = 
-            conn.prepareStatement( "INSERT INTO VEHICLES VALUES( ?,?,? )" );
+            conn.prepareStatement( "INSERT INTO VEHICLES VALUES( ?,?,? )" )){
             ps.setInt(1, id);
             ps.setString( 2, vehicle.getModel());
             ps.setString(3, vehicle.getImage());
             ps.executeUpdate();
-        } catch (SQLException ex) {
-            Logger.getLogger(UserDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
-            return 0;
+            return id;
         }
-        return id;
     }
     
-    private int getLastId (){
+    private int getLastId () throws SQLException{
         int id = 1;
-        try {
+        try (
             Connection  conn = AppUtil.getInstance().getConnection();
             Statement stmt = conn.createStatement();
-            ResultSet rs;
- 
-            rs = stmt.executeQuery("SELECT MAX(ID) FROM VEHICLES");
+            ResultSet rs = stmt.executeQuery("SELECT MAX(ID) FROM VEHICLES")){
             if ( rs.next() ) {
                 id = rs.getInt(1);
                 ++id;
             }
-            stmt.close();
-            rs.close();
-        } catch (Exception ex) {
-            Logger.getLogger(UserDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+            return id;
         }
-        return id;
     }
 }

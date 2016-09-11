@@ -56,6 +56,14 @@
             <to-view-id>/index.xhtml</to-view-id>
             <redirect />
         </navigation-case>
+        <navigation-case>
+            <from-outcome>passenger</from-outcome>
+            <to-view-id>/secret/viewPassengerRide.xhtml</to-view-id>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>driver</from-outcome>
+            <to-view-id>/secret/viewDriverRide.xhtml</to-view-id>
+        </navigation-case>
     </navigation-rule>
     <navigation-rule>
         <from-view-id>/login.xhtml</from-view-id>
@@ -81,6 +89,14 @@
             <from-outcome>index</from-outcome>
             <to-view-id>/index.xhtml</to-view-id>
             <redirect />
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>driver</from-outcome>
+            <to-view-id>/secret/viewDriverRide.xhtml</to-view-id>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>passenger</from-outcome>
+            <to-view-id>/secret/viewPassengerRide.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
     <navigation-rule>

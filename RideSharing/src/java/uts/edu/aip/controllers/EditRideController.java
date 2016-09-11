@@ -5,6 +5,9 @@
  */
 package uts.edu.aip.controllers;
 
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
@@ -13,6 +16,8 @@ import uts.edu.aip.dao.RideDAO;
 import uts.edu.aip.dao.RideDAOImpl;
 import uts.edu.aip.model.Ride;
 import uts.edu.aip.model.User;
+import uts.edu.aip.utilities.AppUtil;
+import uts.edu.aip.utilities.Constant;
 
 /**
  *
@@ -29,19 +34,36 @@ public class EditRideController {
         User user = (User) request.getSession().getAttribute("user");
         
         RideDAO rideDAO = new RideDAOImpl();
-        editRide = rideDAO.getRideIDFromUserID(user.getId());
+         try {
+             editRide = rideDAO.getRideIDFromUserID(user.getId());
+         } catch (SQLException ex) {
+             AppUtil.getInstance().showError(Constant.SQL_ERROR_MESSAGE);
+             Logger.getLogger(EditRideController.class.getName()).log(Level.SEVERE, null, ex);
+         }
     }
      
       public String saveRide(){
-//        
-//        Vehicle v = editRide.getVehicle();
-//        VehicleDAO vehicleDAO = new VehicleDAOImpl();
-//        vehicleDAO.updateVehicle(v);
-//         
+          // validate fields
+        if(!validation())
+            return "";
+        
         RideDAO rdao = new RideDAOImpl();
-        rdao.updateRide(editRide);
-         
-        return "success";
+         try {
+             rdao.updateRide(editRide);
+             return "success";
+         } catch (SQLException ex) {
+             AppUtil.getInstance().showError(Constant.SQL_ERROR_MESSAGE);
+             Logger.getLogger(EditRideController.class.getName()).log(Level.SEVERE, null, ex);
+             return "";
+         }
+    }
+      
+      private boolean validation(){
+        if(!AppUtil.getInstance().isValidTime(this.getEditRide().getPickupTime())){
+            AppUtil.getInstance().showError("The pickup time must be later than current time");
+            return false;
+        }
+        return true;
     }
       
     public Ride getEditRide() {

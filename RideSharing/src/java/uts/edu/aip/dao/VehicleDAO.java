@@ -5,6 +5,7 @@
  */
 package uts.edu.aip.dao;
 
+import java.sql.SQLException;
 import java.util.List;
 import uts.edu.aip.model.Vehicle;
 
@@ -13,9 +14,9 @@ import uts.edu.aip.model.Vehicle;
  * @author NQ
  */
 public interface VehicleDAO {
-   public List<Vehicle> getAllVehicle();
-   public Vehicle findVehicle(int vehicleId);
-   public int addVehicle(Vehicle vehicle);
-   public boolean updateVehicle(Vehicle vehicle);
-   public boolean deleteVehicle(Vehicle vehicle);
+   public List<Vehicle> getAllVehicle() throws SQLException;
+   public Vehicle findVehicle(int vehicleId) throws SQLException;
+   public int addVehicle(Vehicle vehicle) throws SQLException;
+   public void updateVehicle(Vehicle vehicle) throws SQLException;
+   public void deleteVehicle(Vehicle vehicle) throws SQLException;
 }

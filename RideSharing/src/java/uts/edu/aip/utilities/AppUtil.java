@@ -42,28 +42,19 @@ public class AppUtil {
     }
 
     public Connection getConnection() throws SQLException {
-            try {
-                //            String dbURL = "jdbc:derby://localhost:1527/RideSharing";
-//            Properties properties = new Properties();
-//            properties.put("user", "uts");
-//            properties.put("password", "utsadmin");
-                DataSource ds = (DataSource) InitialContext.doLookup("jdbc/ridesharing");
-                conn = ds.getConnection();
-            } catch (NamingException ex) {
-                Logger.getLogger(AppUtil.class.getName()).log(Level.SEVERE, null, ex);
-            }
+        try {
+            DataSource ds = (DataSource) InitialContext.doLookup(Constant.DATABASE_URL);
+            conn = ds.getConnection();
+        } catch (NamingException ex) {
+            Logger.getLogger(AppUtil.class.getName()).log(Level.SEVERE, null, ex);
+        }
         return conn;
     }
-    
+
     public void showError(String message) {
         FacesContext context = FacesContext.getCurrentInstance();
         context.addMessage("myForm:appMessage", new FacesMessage(message));
     }
-    
-//    public void log(Object obj,String msg){
-//        Logger log = Logger.getLogger(obj.getClass().getName());
-//        log.log(Level.INFO, "{0} - {1}", new Object[]{msg, new Date().toString()});
-//    }
 
     public String getStringDate() {
         DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
@@ -73,21 +64,17 @@ public class AppUtil {
         // representation of a date with the defined format.
         return df.format(today);
     }
-    
-    public boolean isValidTime(String time){
+
+    public boolean isValidTime(String time) {
         String[] parts = time.split(":");
         Calendar cal1 = Calendar.getInstance();
         cal1.set(Calendar.HOUR_OF_DAY, Integer.parseInt(parts[0]));
         cal1.set(Calendar.MINUTE, Integer.parseInt(parts[1]));
-        
+
         Date today = Calendar.getInstance().getTime();
-        
-        System.out.println("uts.edu.aip.controllers.RideController.isValidTime()" + today.toString());
-        System.out.println("uts.edu.aip.controllers.RideController.isValidTime()" + cal1.getTime().toString());
-        
         return today.getTime() <= cal1.getTime().getTime();
     }
-    
+
     public String getStringDateByFormat(String format) {
         DateFormat df = new SimpleDateFormat(format);
         // Get the date today using Calendar object.
@@ -114,4 +101,4 @@ public class AppUtil {
 //    public static void main(String[] args) {
 //        System.out.println(AppUtil.getInstance().getStringDate());
 //    }
-}
+    }

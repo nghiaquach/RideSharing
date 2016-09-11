@@ -16,7 +16,7 @@ public class Constant {
     public static final String UPLOAD_DIRECTORY = "resources/images";
     public static final String INITIAL_DATE_FORMAT_FOR_IMAGE = "MMddyyyyHHmmss_";
     
-    public static final String DS_URL = "ID";
+    public static final String DATABASE_URL = "jdbc/ridesharing";
     
     public static final String ID_FIELD = "ID";
     public static final String USER_NAME_FIELD = "USERNAME";
@@ -39,4 +39,6 @@ public class Constant {
     public static final String PICKUP_TIME_FIELD = "PICKUP_TIME";
     public static final String FINAL_DESTINATION_FIELD = "FINAL_DESTINATION";
     public static final String BOOKED_BY_FIELD = "BOOKED_BY";
+    
+    public static final String SQL_ERROR_MESSAGE = "There is something wrong with the connection";
 }

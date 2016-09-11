@@ -23,8 +23,8 @@
                     <h:commandButton styleClass="medium-button" rendered="#{!loginController.isLoggedIn}" value="Register" action="register?faces-redirect=true"/>
                     <h:commandButton styleClass="logout-button" rendered="#{loginController.isLoggedIn}" value="Logout" action="#{loginController.logout()}"/>
                     <h:commandButton styleClass="medium-button" rendered="#{!loginController.isLoggedIn}" value="Login" action="login?faces-redirect=true"/>
-                    <h:commandButton styleClass="medium-button" rendered="#{loginController.isDriver and loginController.isLoggedIn}" value="View Ride" action="secret/viewDriverRide?faces-redirect=true"/>
-                    <h:commandButton styleClass="medium-button" rendered="#{!loginController.isDriver and loginController.isLoggedIn}" value="View Passenger Ride" action="secret/viewPassengerRide?faces-redirect=true"/>
+                    <h:commandButton styleClass="medium-button" rendered="#{loginController.isDriver and loginController.isLoggedIn}" value="View My Ride" action="secret/viewDriverRide?faces-redirect=true"/>
+                    <h:commandButton styleClass="medium-button" rendered="#{!loginController.isDriver and loginController.isLoggedIn}" value="View My Ride" action="secret/viewPassengerRide?faces-redirect=true"/>
                     </p>
                 </h:form>
                 </div>
