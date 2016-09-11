@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package uts.edu.aip.controllers;
 
 import java.io.Serializable;
@@ -13,13 +8,17 @@ import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
 import uts.edu.aip.dao.UserDAO;
 import uts.edu.aip.dao.UserDAOImpl;
-import uts.edu.aip.model.User;
+import uts.edu.aip.dto.User;
 import uts.edu.aip.utilities.AppUtil;
 import uts.edu.aip.utilities.Constant;
 
 /**
  *
  * @author NQ
+ * @version 1.0
+ * A backing bean for the register.xhtml Facelet. This backing bean assists
+ * with register a new user
+ * 
  */
 
 @Named
@@ -27,11 +26,19 @@ import uts.edu.aip.utilities.Constant;
 public class UserController implements Serializable{
     private User user = new User();
 
+    /**
+     * 
+     * This register method to insert user into database,
+     * it also checks if the username existing in database
+     * @return a string as action to navigate to the main page 
+     * 
+     */
     public String register(){
-   
+        //check the username if it is existing in current database
         UserDAO userDAO = new UserDAOImpl();
         boolean isExistingUser = this.isExistingUser(userDAO);
         
+        //insert user information to database
         if(!isExistingUser){
             try {
                 userDAO.addUser(user);
@@ -48,6 +55,12 @@ public class UserController implements Serializable{
             return "";
         }
     }
+    
+    /**
+     * 
+     * This isExistingUser method is used to check the username is existing in database or note
+     * @return a boolean value of the validation
+     */
     
     private boolean isExistingUser(UserDAO userDAO){
         User searchUser = null;

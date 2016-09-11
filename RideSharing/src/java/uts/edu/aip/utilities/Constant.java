@@ -1,13 +1,12 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package uts.edu.aip.utilities;
 
 /**
  *
  * @author NQ
+ * @version 1.0
+ * 
+ * a list of constant data 
+ * 
  */
 public class Constant {
     public static final String DRIVER_TYPE = "Driver";

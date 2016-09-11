@@ -1,9 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package uts.edu.aip.model;
+package uts.edu.aip.dto;
 
 import java.io.Serializable;
 import javax.validation.constraints.Size;
@@ -11,11 +6,12 @@ import javax.validation.constraints.Size;
 /**
  *
  * @author NQ
+ * @version 1.0
+ * This user class is used for both Driver and Passenger
+ * this also has a constraint feature such as min/max of the characters and validation messages
+ * 
  */
 public class User implements Serializable{
-    
-    public static final String  PASSENGER = "Passenger";
-    public static final String DRIVER = "Driver";
     
     private int id;
     private String username;
@@ -40,6 +36,11 @@ public class User implements Serializable{
         this.phoneNo = phoneNo;
     }
     
+    /**
+     * The id of the user which could be used for driver 
+     * or passenger
+     * @return an ID number
+     */
     public int getId() {
         return id;
     }
@@ -48,6 +49,10 @@ public class User implements Serializable{
         this.id = id;
     }
     
+    /**
+     * The username of the user which could be used both driver or passenger
+     * @return non-null, a username string
+     */
     @Size(min = 3, max = 20, message="The username must have at least 3 characters")
     public String getUsername() {
         return username;
@@ -57,6 +62,10 @@ public class User implements Serializable{
         this.username = username;
     }
     
+    /**
+     * The password of the user 
+     * @return non-null, a password string
+     */
     @Size(min = 4, max = 20, message="The password must have at least 4 characters")
     public String getPassword() {
         return password;
@@ -66,6 +75,13 @@ public class User implements Serializable{
         this.password = password;
     }
 
+     /**
+     * 
+     * The registration date which is automatically generated 
+     * when the user registered on the system
+     * @return non-null, a date string
+     * 
+     */
     @Size(min = 4, max = 20)
     public String getRegistrationDate() {
         return registrationDate;
@@ -75,6 +91,12 @@ public class User implements Serializable{
         this.registrationDate = registrationDate;
     }
 
+    /**
+     * 
+     * The user type (Driver or Passenger)
+     * @return non-null, an user type string
+     * 
+     */
     public String getUserType() {
         return userType;
     }
@@ -83,6 +105,12 @@ public class User implements Serializable{
         this.userType = userType;
     }
 
+     /**
+     * 
+     * The first name of the user (Driver or Passenger)
+     * @return non-null, an user type string
+     * 
+     */
     @Size(min = 2, max = 20, message="The first name must have at least 2 characters")
     public String getFirstName() {
         return firstName;
@@ -92,6 +120,13 @@ public class User implements Serializable{
         this.firstName = firstName;
     }
 
+    
+    /**
+     * 
+     * The last name of the user (Driver or Passenger)
+     * @return non-null, an user type string
+     * 
+     */
     @Size(min = 2, max = 20, message="The last name must have at least 2 characters")
     public String getLastName() {
         return lastName;
@@ -101,6 +136,12 @@ public class User implements Serializable{
         this.lastName = lastName;
     }
 
+    /**
+     * 
+     * The phone number of the user (Driver or Passenger)
+     * @return non-null, an user type string
+     * 
+     */
     @Size(min = 5, max = 20, message="The phone number must have at least 5 characters")
     public String getPhoneNo() {
         return phoneNo;

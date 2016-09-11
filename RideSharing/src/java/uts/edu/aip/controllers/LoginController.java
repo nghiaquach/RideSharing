@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package uts.edu.aip.controllers;
 
 import java.io.Serializable;
@@ -17,14 +12,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.Size;
 import uts.edu.aip.dao.UserDAO;
 import uts.edu.aip.dao.UserDAOImpl;
-import uts.edu.aip.model.User;
+import uts.edu.aip.dto.User;
 import uts.edu.aip.utilities.AppUtil;
 import uts.edu.aip.utilities.Constant;
 
 /**
  *
  * @author NQ
+ * @version 1.0
+ * A backing bean for the login.xhtml Facelet. This backing bean assists with the 
+ * login process
+ * 
  */
+
 @Named
 @SessionScoped
 public class LoginController implements Serializable{
@@ -35,19 +35,26 @@ public class LoginController implements Serializable{
     private boolean isLoggedIn = false;
     private boolean isDriver = false;
     
+    /**
+     * This login method using Realms to identify user with their username and password
+     * Then, username is used to lookup user information and its information is set to session named "user"
+     * 
+     * @return a string as action to navigate to view ride for passenger or driver 
+     */
     public String login(){
         FacesContext context = FacesContext.getCurrentInstance();
         HttpServletRequest request = (HttpServletRequest)context.getExternalContext().getRequest();
-        
+        //login using Realms
         try {
             request.login(username, password);
             isLoggedIn = true;
         } catch (ServletException e) {
+            //display message if username and password do not match
             Logger.getLogger(LoginController.class.getName()).log(Level.INFO, null, e);
             AppUtil.getInstance().showError("The username and password you entered don't match");
             return "";
         }
-        
+        //initialise UserDAO to find User object based on username
         UserDAO userDAO = new UserDAOImpl();
         try {
             user = userDAO.findUser(username);
@@ -55,15 +62,23 @@ public class LoginController implements Serializable{
             AppUtil.getInstance().showError(Constant.SQL_ERROR_MESSAGE);
             Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
         }
+        //Assign User object to "user" session 
         request.getSession().setAttribute("user", user);
-        
+        //Return a string to navigate to the correct page for user/passenger
         if (user.getUserType()!=null && user.getUserType().equals(Constant.DRIVER_TYPE))
-                return "driverLoggedIn";
+            return "driverLoggedIn";
         
         else
-                return "passengerLoggedIn";
+            return "passengerLoggedIn";
     }
     
+    
+    /**
+     * This logout method using Realms to sign out the user account 
+     * and remove its session
+     * 
+     * @return a string as action to navigate to the index page
+     */
      public String logout(){
         FacesContext context = FacesContext.getCurrentInstance();
         HttpServletRequest request = (HttpServletRequest)context.getExternalContext().getRequest();
@@ -80,16 +95,12 @@ public class LoginController implements Serializable{
         }
         return "logout";
     }
-     
-    public String returnMainPage(){
-        HttpServletRequest origRequest = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
-        
-        System.out.println("uts.edu.aip.controllers.LoginController.getRequestURL()" + origRequest.getRequestURL());
-        System.out.println("uts.edu.aip.controllers.LoginController.getContextPath()" + origRequest.getContextPath());
-        System.out.println("uts.edu.aip.controllers.LoginController.getPathInfo()" + origRequest.getPathInfo());
-        return "index";
-    }
 
+     
+    /**
+     * Retrieve user information
+     * @return a user object
+     */
     public User getUser() {
         return user;
     }
@@ -98,6 +109,10 @@ public class LoginController implements Serializable{
         this.user = user;
     }
 
+     /**
+     * isLoggedIn is used to track the user logged in success or not
+     * @return the login status of the user
+     */
     public boolean isIsLoggedIn() {
         return isLoggedIn;
     }
@@ -106,6 +121,10 @@ public class LoginController implements Serializable{
         this.isLoggedIn = isLoggedIn;
     }
 
+    /**
+     * The username which is unique name of the user
+     * @return a username string
+     */
     @Size(min = 3, max = 20, message="The username must have at least 3 characters")
     public String getUsername() {
         return username;
@@ -115,6 +134,11 @@ public class LoginController implements Serializable{
         this.username = username;
     }
     
+    
+    /**
+     * The password of the user
+     * @return a password string
+     */
     @Size(min = 4, max = 20, message="The password must have at least 4 characters")
     public String getPassword() {
         return password;
@@ -124,6 +148,10 @@ public class LoginController implements Serializable{
         this.password = password;
     }
 
+    /**
+     * isIsDriver is used to check whether the user is driver or not
+     * @return a boolean of driver user
+     */
     public boolean isIsDriver() {
         if(this.getUser().getUserType()!=null){
             return this.getUser().getUserType().equals(Constant.DRIVER_TYPE);

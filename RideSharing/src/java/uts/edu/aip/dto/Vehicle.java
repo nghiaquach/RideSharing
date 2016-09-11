@@ -1,16 +1,15 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package uts.edu.aip.model;
+package uts.edu.aip.dto;
 
 import java.io.Serializable;
 import javax.validation.constraints.Size;
 
 /**
- *
  * @author NQ
+ * @version 1.0
+ *
+ * This class is used to store Vehicle information such as ID,
+ * Model and the image of the vehicle
+ * 
  */
 public class Vehicle implements Serializable{
     private int id;
@@ -26,6 +25,10 @@ public class Vehicle implements Serializable{
         this.image = image;
     }
     
+     /**
+     * The id of the vehicle
+     * @return non-null, a vehicle id number
+     */
     public int getId() {
         return id;
     }
@@ -33,6 +36,11 @@ public class Vehicle implements Serializable{
     public void setId(int id) {
         this.id = id;
     }
+    
+    /**
+     * The model of the vehicle
+     * @return non-null, a model string
+     */
     @Size(min = 2, max = 20, message="Please enter the model of your vehicle")
     public String getModel() {
         return model;
@@ -42,6 +50,10 @@ public class Vehicle implements Serializable{
         this.model = model;
     }
 
+    /**
+     * The image/photo of the vehicle
+     * @return non-null, a file name of the image which is located on the server folder
+     */
     @Size(min = 2, max = 20, message="Please select a photo of your vehicle")
     public String getImage() {
         return image;

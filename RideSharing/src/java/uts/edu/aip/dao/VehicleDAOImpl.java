@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package uts.edu.aip.dao;
 
 import java.sql.Connection;
@@ -13,12 +8,16 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import uts.edu.aip.utilities.AppUtil;
-import uts.edu.aip.model.Vehicle;
+import uts.edu.aip.dto.Vehicle;
 import uts.edu.aip.utilities.Constant;
 
 /**
  *
  * @author NQ
+ * @version 1.0
+ * 
+ * the CRUD for the Vehicle to access and edit the vehicle data in the database
+ * 
  */
 public class VehicleDAOImpl implements VehicleDAO{
 
@@ -96,7 +95,13 @@ public class VehicleDAOImpl implements VehicleDAO{
             return id;
         }
     }
-    
+    /**
+     * 
+     * This getLastId method is used to get the last id of the vehicle and increase the value by 1
+     * @return a id number
+     * @throws SQLException
+     * 
+     */
     private int getLastId () throws SQLException{
         int id = 1;
         try (

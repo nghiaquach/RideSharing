@@ -1,17 +1,16 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package uts.edu.aip.dao;
 
 import java.sql.SQLException;
 import java.util.List;
-import uts.edu.aip.model.Ride;
+import uts.edu.aip.dto.Ride;
 
 /**
  *
  * @author NQ
+ * @version 1.0
+ * 
+ * the list of interface methods for RideDAO
+ * 
  */
 public interface RideDAO {
    public List<Ride> getRides() throws SQLException;

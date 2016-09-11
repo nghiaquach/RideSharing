@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package uts.edu.aip.dao;
 
 import java.security.NoSuchAlgorithmException;
@@ -16,12 +11,16 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import uts.edu.aip.utilities.AppUtil;
-import uts.edu.aip.model.User;
+import uts.edu.aip.dto.User;
 import uts.edu.aip.utilities.Constant;
 
 /**
  *
  * @author NQ
+ * @version 1.0
+ * 
+ * the CRUD for the user to access and edit the user data in the database
+ * 
  */
 public class UserDAOImpl implements UserDAO {
 
@@ -134,6 +133,13 @@ public class UserDAOImpl implements UserDAO {
         }
     }
     
+    /**
+     * 
+     * This getLastId method is used to get the last id of the user and increase the value by 1
+     * @return a id number
+     * @throws SQLException
+     * 
+     */
     private int getLastId() throws SQLException {
         int id = 1;
         try (Connection conn = AppUtil.getInstance().getConnection();

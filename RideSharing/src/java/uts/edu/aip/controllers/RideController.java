@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package uts.edu.aip.controllers;
 
 import java.io.File;
@@ -27,14 +22,18 @@ import uts.edu.aip.dao.UserDAOImpl;
 import uts.edu.aip.dao.VehicleDAO;
 import uts.edu.aip.dao.VehicleDAOImpl;
 import uts.edu.aip.utilities.AppUtil;
-import uts.edu.aip.model.Ride;
-import uts.edu.aip.model.User;
-import uts.edu.aip.model.Vehicle;
+import uts.edu.aip.dto.Ride;
+import uts.edu.aip.dto.User;
+import uts.edu.aip.dto.Vehicle;
 import uts.edu.aip.utilities.Constant;
 
 /**
  *
  * @author NQ
+ * @version 1.0
+ * A backing bean for the addRide.xhtml and viewRide (Driver and Passenger) Facelet.
+ * This backing bean assists with viewing and adding Ride
+ * 
  */
 @Named
 @SessionScoped
@@ -48,10 +47,14 @@ public class RideController implements Serializable {
     private User user = new User();
     private User passengerInfo = new User();
     private User driverInfo = new User();
+    //image or photo path
     private Part file;
     private String tempFileName;
     
-    
+    /**
+     * This saveImage method is used to store the image to the defined folder 
+     * and generate the file name with date time format
+     */
     public synchronized void saveImage() {
         
         FacesContext context = FacesContext.getCurrentInstance();
@@ -70,7 +73,10 @@ public class RideController implements Serializable {
             context.addMessage(null, new FacesMessage(e.getMessage()));
         }
     }
-    
+    /**
+     * This createUploadDir method is used to create a directory for image 
+     * which is uploaded on the server by user
+     */
     private void createUploadDir(String uploadDirPath){
         File path = new File(uploadDirPath);
 
@@ -79,6 +85,11 @@ public class RideController implements Serializable {
         }
     }
     
+    /**
+     * This validation method is used to validate whether the user choose the image or 
+     * not, and the pickup time should after the current time
+     * @return a status of the validation
+     */
     private boolean validation(){
         if(tempFileName == null){
             AppUtil.getInstance().showError("Please select an image of your vehicle");
@@ -90,7 +101,12 @@ public class RideController implements Serializable {
         }
         return true;
     }
-
+    
+    /**
+     * This addRide method is used to add a new ride information by driver which provided by user
+     * @return a string action which is used for page navigation purposes
+     * 
+     */
     public synchronized String addRide() {
         // validate fields
         if(!validation())
@@ -114,13 +130,13 @@ public class RideController implements Serializable {
             Logger.getLogger(RideController.class.getName()).log(Level.SEVERE, null, ex);
             return "";
         }
-//        if (vehicleId!=0 && isAddedRide) {
-//            return "success";
-//        } else {
-//            return "";
-//        }
     }
     
+    /**
+     * This bookRide method is used to assign passenger id into booked by field
+     * @return a string action which is used for page navigation purposes
+     * 
+     */
     public String bookRide(Ride ride){
         RideDAO rideDAO = new RideDAOImpl();
         int passengerID = this.getUser().getId();
@@ -132,10 +148,14 @@ public class RideController implements Serializable {
         }
         return "booked";
     }
-  
+     /** 
+     * This deleteRide method is used to remove the vehicle and the ride information
+     * @return a string action which is used for page navigation purposes
+     */
     public String deleteRide(){
+        //get current ride information
         Ride r = this.getMyRide();
-        
+        //remove the vehicle information in database
         VehicleDAO vehicleDAO = new VehicleDAOImpl();
         try {
             vehicleDAO.deleteVehicle(r.getVehicle());
@@ -143,7 +163,7 @@ public class RideController implements Serializable {
             AppUtil.getInstance().showError(Constant.SQL_ERROR_MESSAGE);
             Logger.getLogger(RideController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+        //remove the ride information in database
         RideDAO rdao = new RideDAOImpl();
         try {
             rdao.deleteRide(r);
@@ -155,6 +175,10 @@ public class RideController implements Serializable {
         return "deleted";
     }
     
+    /** 
+     * This getVehicleId method is used to add a vehicle information
+     * @return a id number of the vehicle
+     */
     private int getVehicleId(){
         int vehicleId = 0;
         VehicleDAO vehicleDAO = new VehicleDAOImpl();
@@ -167,14 +191,10 @@ public class RideController implements Serializable {
         return vehicleId;
     }
 
-    public Vehicle getVehicle() {
-        return vehicle;
-    }
-
-    public void setVehicle(Vehicle vehicle) {
-        this.vehicle = vehicle;
-    }
-
+    /** 
+     * This getMyRide method is used to retrieve current ride of the user
+     * @return a ride object
+     */
     public Ride getMyRide() {
         RideDAO rideDAO = new RideDAOImpl();
         try {
@@ -183,28 +203,23 @@ public class RideController implements Serializable {
             AppUtil.getInstance().showError(Constant.SQL_ERROR_MESSAGE);
             Logger.getLogger(RideController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return new Ride();
+        return myRide;
     }
 
-    public void setMyRide(Ride myRide) {
-        this.myRide = myRide;
-    }
-    
-    
-     public Ride getRide() {
-        return ride;
-    }
-
-    public void setRide(Ride ride) {
-        this.ride = ride;
-    }
-
+    /** 
+     * This getUser method is used to retrieve user info from session
+     * @return a user object
+     */
     public User getUser() {
         FacesContext context = FacesContext.getCurrentInstance();
         HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
         return user = (User) request.getSession().getAttribute("user");
     }
 
+     /** 
+     * This getRides method is used to retrieve all available rides
+     * @return a list of ride
+     */
     public List<Ride> getRides() {
         RideDAO rideDAO = new RideDAOImpl();
         try {
@@ -213,9 +228,14 @@ public class RideController implements Serializable {
             AppUtil.getInstance().showError(Constant.SQL_ERROR_MESSAGE);
             Logger.getLogger(RideController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return new ArrayList<Ride>();
+        return rides;
     }
     
+    /** 
+     * This checkRedirectPage method is used to 
+     * navigate to the correct page based on user type
+     * 
+     */
     public void checkRedirectPage(){
         FacesContext context = FacesContext.getCurrentInstance();
         
@@ -225,6 +245,43 @@ public class RideController implements Serializable {
         else 
             outcome = "passenger";
         context.getApplication().getNavigationHandler().handleNavigation(context, null, outcome);
+    }
+    
+    /** 
+     * This getPassengerInfo method is used to 
+     * retrieve passenger info
+     * @return an user object
+     */
+    public User getPassengerInfo() {
+        UserDAO userDAO = new UserDAOImpl();
+        try {
+            return userDAO.findUserByID(this.getMyRide().getBookedBy());
+        } catch (SQLException ex) {
+            AppUtil.getInstance().showError(Constant.SQL_ERROR_MESSAGE);
+            Logger.getLogger(RideController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return passengerInfo;
+    }
+    
+    /** 
+     * This getDriverInfo method is used to 
+     * retrieve driver info
+     * @return an user object
+     */
+    public User getDriverInfo() {   
+        for (Ride bookedRide : this.getRides()) {
+            int passengerBookingID = bookedRide.getBookedBy();
+            if(passengerBookingID == this.getUser().getId()){
+                UserDAO userDAO = new UserDAOImpl();
+                try {
+                    return userDAO.findUserByID(bookedRide.getId());
+                } catch (SQLException ex) {
+                    AppUtil.getInstance().showError(Constant.SQL_ERROR_MESSAGE);
+                    Logger.getLogger(RideController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+        return driverInfo;
     }
 
     public void setRides(List<Ride> rides) {
@@ -252,35 +309,8 @@ public class RideController implements Serializable {
         this.file = file;
     }
 
-    public User getPassengerInfo() {
-        UserDAO userDAO = new UserDAOImpl();
-        try {
-            return userDAO.findUserByID(this.getMyRide().getBookedBy());
-        } catch (SQLException ex) {
-            AppUtil.getInstance().showError(Constant.SQL_ERROR_MESSAGE);
-            Logger.getLogger(RideController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return new User();
-    }
-
     public void setPassengerInfo(User passengerInfo) {
         this.passengerInfo = passengerInfo;
-    }
-   
-    public User getDriverInfo() {   
-        for (Ride bookedRide : this.getRides()) {
-            int passengerBookingID = bookedRide.getBookedBy();
-            if(passengerBookingID == this.getUser().getId()){
-                UserDAO userDAO = new UserDAOImpl();
-                try {
-                    return userDAO.findUserByID(bookedRide.getId());
-                } catch (SQLException ex) {
-                    AppUtil.getInstance().showError(Constant.SQL_ERROR_MESSAGE);
-                    Logger.getLogger(RideController.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        }
-        return driverInfo;
     }
 
     public void setDriverInfo(User driverInfo) {
@@ -288,10 +318,30 @@ public class RideController implements Serializable {
     }
     
     public boolean isAddRide() {
-        return this.getUser().getUserType().equals(User.DRIVER) && this.getMyRide().getId()>0;
+        return this.getUser().getUserType().equals(Constant.DRIVER_TYPE) && this.getMyRide().getId()>0;
     }
     
     public boolean isEditable() {
         return this.getMyRide().getId()>0 && this.getPassengerInfo().getId()==0;
+    }
+    
+    public Vehicle getVehicle() {
+        return vehicle;
+    }
+
+    public void setVehicle(Vehicle vehicle) {
+        this.vehicle = vehicle;
+    }
+    
+    public void setMyRide(Ride myRide) {
+        this.myRide = myRide;
+    }
+    
+    public Ride getRide() {
+        return ride;
+    }
+    
+    public void setRide(Ride ride) {
+        this.ride = ride;
     }
 }

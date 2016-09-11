@@ -1,17 +1,16 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package uts.edu.aip.dao;
 
 import java.sql.SQLException;
 import java.util.List;
-import uts.edu.aip.model.User;
+import uts.edu.aip.dto.User;
 
 /**
  *
  * @author NQ
+ * @version 1.0
+ * 
+ * the list of interface methods for UserDAO
+ * 
  */
 public interface UserDAO {
    public List<User> getUsers() throws SQLException;

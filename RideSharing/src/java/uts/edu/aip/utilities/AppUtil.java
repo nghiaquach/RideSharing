@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package uts.edu.aip.utilities;
 
 import java.security.MessageDigest;
@@ -24,6 +19,10 @@ import javax.sql.DataSource;
 /**
  *
  * @author NQ
+ * @version 1.0
+ * 
+ * a singleton class which is allowed other class can easily to access the method
+ * 
  */
 public class AppUtil {
 
@@ -33,14 +32,15 @@ public class AppUtil {
     private AppUtil() {
         // Exists only to defeat instantiation.
     }
-
+    
     public static AppUtil getInstance() {
         if (instance == null) {
             instance = new AppUtil();
         }
         return instance;
     }
-
+    // get the connection from DataSource
+    // return a connection object
     public Connection getConnection() throws SQLException {
         try {
             DataSource ds = (DataSource) InitialContext.doLookup(Constant.DATABASE_URL);
@@ -51,11 +51,13 @@ public class AppUtil {
         return conn;
     }
 
+    // show the message on the xhtml page in myForm:appMessage
     public void showError(String message) {
         FacesContext context = FacesContext.getCurrentInstance();
         context.addMessage("myForm:appMessage", new FacesMessage(message));
     }
 
+    // return the string of the current date by the defined format
     public String getStringDate() {
         DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
         // Get the date today using Calendar object.
@@ -64,7 +66,7 @@ public class AppUtil {
         // representation of a date with the defined format.
         return df.format(today);
     }
-
+    // validate the time provided and the current time from the system
     public boolean isValidTime(String time) {
         String[] parts = time.split(":");
         Calendar cal1 = Calendar.getInstance();
@@ -75,6 +77,7 @@ public class AppUtil {
         return today.getTime() <= cal1.getTime().getTime();
     }
 
+    // return the string of date by the format 
     public String getStringDateByFormat(String format) {
         DateFormat df = new SimpleDateFormat(format);
         // Get the date today using Calendar object.
@@ -84,12 +87,14 @@ public class AppUtil {
         return df.format(today);
     }
 
+    // return the hash string with the supported data which is encrypted using SHA-256 algorithm
     public static String hash256(String data) throws NoSuchAlgorithmException {
         MessageDigest md = MessageDigest.getInstance("SHA-256");
         md.update(data.getBytes());
         return bytesToHex(md.digest());
     }
 
+    // convert byte to hex with bytes as parameter
     public static String bytesToHex(byte[] bytes) {
         StringBuffer result = new StringBuffer();
         for (byte byt : bytes) {

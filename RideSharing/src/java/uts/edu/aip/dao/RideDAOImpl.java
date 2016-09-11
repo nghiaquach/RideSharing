@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package uts.edu.aip.dao;
 
 import java.sql.Connection;
@@ -13,16 +8,27 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import uts.edu.aip.utilities.AppUtil;
-import uts.edu.aip.model.Ride;
-import uts.edu.aip.model.Vehicle;
+import uts.edu.aip.dto.Ride;
+import uts.edu.aip.dto.Vehicle;
 import uts.edu.aip.utilities.Constant;
 
 /**
  *
  * @author NQ
+ * @version 1.0
+ * 
+ * the CRUD for the Ride to access and edit the ride data in the database
+ * 
  */
 public class RideDAOImpl implements RideDAO {
-
+    
+    /**
+     * 
+     * This getRides method is used to retrieve all rides data from the database
+     * @return a list of the ride
+     * @throws SQLException
+     * 
+     */
     @Override
     public List<Ride> getRides() throws SQLException {
         List<Ride> rides = new ArrayList<>();
@@ -53,11 +59,26 @@ public class RideDAOImpl implements RideDAO {
         }
     }
 
+    /**
+     * 
+     * This getVehicle method is used to retrieve Vehicle data from the database
+     * @return a vehicle object
+     * @throws SQLException
+     * 
+     */
     private Vehicle getVehicle(int vehicleID) throws SQLException {
         VehicleDAO vehicleDAO = new VehicleDAOImpl();
         return vehicleDAO.findVehicle(vehicleID);
     }
 
+    /**
+     * 
+     * This getRide method is used to retrieve Ride data from the database with ride id
+     * @param rideID
+     * @return a ride object
+     * @throws SQLException
+     * 
+     */
     @Override
     public Ride getRide(int rideID) throws SQLException {
         Ride ride = new Ride();
@@ -85,6 +106,14 @@ public class RideDAOImpl implements RideDAO {
         }
     }
 
+    /**
+     * 
+     * This getRideIDFromUserID method is used to retrieve Ride data from the database with user id
+     * @param userID
+     * @return a ride object
+     * @throws SQLException
+     * 
+     */
     @Override
     public Ride getRideIDFromUserID(int userID) throws SQLException {
         Ride ride = new Ride();
@@ -113,6 +142,13 @@ public class RideDAOImpl implements RideDAO {
         }
     }
 
+    /**
+     * 
+     * This addRide method is used to add a Ride data into the database
+     * @param ride
+     * @throws SQLException
+     * 
+     */
     @Override
     public void addRide(Ride ride) throws SQLException {
         int id = this.getLastId();
@@ -135,6 +171,13 @@ public class RideDAOImpl implements RideDAO {
         }
     }
 
+     /**
+     * 
+     * This updateRide method is used to update a Ride data into the database
+     * @param ride
+     * @throws SQLException
+     * 
+     */
     @Override
     public void updateRide(Ride ride) throws SQLException {
         try (
@@ -167,6 +210,13 @@ public class RideDAOImpl implements RideDAO {
         }
     }
 
+    /**
+     * 
+     * This getLastId method is used to get the last id of the ride and increase the value by 1
+     * @return a id number
+     * @throws SQLException
+     * 
+     */
     private int getLastId() throws SQLException {
         int id = 1;
         try (
